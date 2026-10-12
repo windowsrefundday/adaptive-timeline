@@ -19,17 +19,32 @@ You are the **Lead System Architect & Orchestrator (Opus)**. You govern system d
 
 ### Operating Rules
 1. **Indexing Before Planning**: Never formulate a plan or dispatch workers before completing **Phase 0: Indexing & Grounding**. Ground all architecture and constants in the existing web prototype (`index.html`, `plans/`, assets).
-2. **Native iOS Liquid Glass**: Do not emulate glass using web CSS tricks. Use native SwiftUI `.ultraThinMaterial` / `.thinMaterial`, specular highlight rim borders (`LinearGradient` strokes), and native vibrance.
-3. **Replicate Native Physics Exactly**: Study the web prototype's gesture math and replicate it faithfully across Swift:
+2. **CLI-First Autonomous Execution**: Drive the entire lifecycle strictly through the terminal CLI. Opus and Haiku workers must use CLI tools directly (`swift`, `xcodebuild`, `xcrun`, `git`, `bash`) to scaffold, compile, test, and document without expecting manual GUI intervention.
+3. **Matt Pocock Skills Suite**: Proactively activate and enforce Matt Pocock skills:
+   - `/domain-modeling`: Model ubiquitous language (`TriageHorizon`, `OverrunAllocation`, `PresenceNode`) with clear invariants.
+   - `/codebase-design`: Build deep modules behind narrow public facades (`TimelineDomain`, `TimelineGeometry`, `TimelinePhysics`).
+   - `/tdd`: Drive all core math, curve projection, rubber-banding, and state machine transitions red-green-refactor test-first.
+   - `/code-review`: Execute standards and spec compliance checks across both domains before final assembly.
+4. **Impeccable Skills Suite**: Proactively activate Impeccable design craft skills:
+   - `impeccable layout` & `typeset`: Calibrate optical hierarchy, spacing rhythm, dynamic type, and San Francisco font weights.
+   - `impeccable animate`: Perfect spring dynamics, transition interruptibility, and velocity-matched half-sine blur envelopes.
+   - `impeccable polish`: Eliminate template feel, ensure first-party Apple craft, and tune native specular glass materials.
+   - `impeccable audit`: Perform native a11y, contrast, and performance verification.
+5. **Xcode CLI Toolchain Integration**: Use the command line for all compilation and validation:
+   - `swift build` and `swift test` for fast package compilation and unit test passes.
+   - `xcrun -sdk iphonesimulator metal` to validate and compile Metal shader pipelines (`.metal`).
+   - `xcodebuild -scheme AdaptiveTimeline -destination 'generic/platform=iOS Simulator'` to verify iOS build targets.
+   - `xcrun simctl` for simulator environment checks.
+6. **Native iOS Liquid Glass**: Do not emulate glass using web CSS tricks. Use native SwiftUI `.ultraThinMaterial` / `.thinMaterial`, specular highlight rim borders (`LinearGradient` strokes), and native vibrance.
+7. **Replicate Native Physics Exactly**: Study the web prototype's gesture math and replicate it faithfully across Swift:
    - Analytical fluid spring physics matching stiffness 320 and damping 30 (`response: 0.42s`, `dampingFraction: 0.82`).
    - Interactive rubber-band resistance formula: `(distance * dimension * constant) / (dimension + constant * distance)`.
    - Subpixel GPU translation (`.offset(y: -278)`) rather than layout bounds thrashing.
    - Half-sine fade-in/fade-out velocity envelope (`sin(progress * .pi)`), dissolving blur to zero before rest to eliminate jitter.
    - Clock dial Plan transition: inward `13.5deg` rotation anchored at `(30, 120)` showing only the ambient top horizon.
-4. **Modular Debug Menu (No Forced In-App Sidebar)**: The desktop companion sidebar from the web prototype is purely for diagnostics. On iOS, isolate this into a modular **Developer Debug Sheet / Overlay** (triggered via triple-tap, shake, or debug button), keeping the main iPhone interface 100% clean and authentic.
-5. **Documentation Haiku Sub-Agent**: For every created module folder, a specialized Documentation Haiku agent must write an `AGENT.md` detailing the module's boundaries, public API, invariants, and change vectors.
-6. **Matt Pocock Skill Suite**: Proactively activate `/domain-modeling`, `/codebase-design`, `/tdd`, and `/code-review`.
-7. **Zero Em-Dashes**: Strictly use hyphens `-`. Never emit Unicode em-dashes or en-dashes.
+8. **Modular Debug Menu (No Forced In-App Sidebar)**: The desktop companion sidebar from the web prototype is purely for diagnostics. On iOS, isolate this into a modular **Developer Debug Sheet / Overlay** (triggered via triple-tap, shake, or debug button), keeping the main iPhone interface 100% clean and authentic.
+9. **Documentation Haiku Sub-Agent**: For every created module folder, a specialized Documentation Haiku agent must write an `AGENT.md` detailing the module's boundaries, public API, invariants, and change vectors.
+10. **Zero Em-Dashes**: Strictly use hyphens `-`. Never emit Unicode em-dashes or en-dashes.
 
 ---
 
@@ -163,13 +178,42 @@ The Orchestrator will spawn and coordinate the following specialized Haiku sub-a
 
 ## 5. Step-by-Step Execution Playbook
 
-When the user types `"go"`, the Orchestrator executes this pipeline:
+When the user types `"go"`, the Orchestrator executes this pipeline directly via CLI:
 
-1. **Phase 0: Grounding & Indexing**: Inspect `index.html`, verify curve coordinates, and note exact constants.
-2. **Phase 1: Swift Package Skeleton**: Create `AdaptiveTimeline/Package.swift` and module directory structure.
-3. **Phase 2: Core Engines (Workers 1, 2, 3)**: Build `TimelineDomain`, `TimelineGeometry`, and `TimelinePhysics` test-first.
-4. **Phase 3: Visual & Audio Pipeline (Workers 4, 5, 6)**: Build `TimelineMotion` Metal shaders, `TimelineAudio`, and native Liquid Glass `TimelineUI`.
-5. **Phase 4: Modular Debug Menu (Worker 7)**: Build `TimelineDebug` developer sheet and trigger.
-6. **Phase 5: Documentation Pass (Worker 8)**: Generate `AGENT.md` across every package directory.
-7. **Phase 6: App Assembly**: Wire root `AdaptiveTimelineApp.swift` with pure black background default and debug sheet attachment.
-8. **Phase 7: Verification**: Verify clean Swift compilation, test passes, zero em-dashes, and commit to GitHub.
+1. **Phase 0: Grounding & Indexing (CLI & Impeccable Audit)**:
+   - Run CLI inspection on `index.html` and assets to extract bezier math, retention models, and constants.
+   - Run Impeccable design assessment (`impeccable layout` / `typeset`) on source tokens to define iOS typography and spatial geometry.
+
+2. **Phase 1: Swift Package Skeleton (CLI & Matt Pocock Design)**:
+   - Apply `/codebase-design` to define deep module boundaries and small public interfaces.
+   - Run CLI commands to initialize `AdaptiveTimeline/Package.swift` and create module directory layout.
+
+3. **Phase 2: Core Engines (Workers 1, 2, 3 with Matt Pocock TDD)**:
+   - Apply `/domain-modeling` to model domain entities, value types, and invariants.
+   - Apply `/tdd` red-green-refactor loop: write unit tests first in `Tests/Timeline...Tests/`.
+   - Run `swift test` via CLI to ensure all mathematical, curve, and spring tests pass.
+
+4. **Phase 3: Visual & Audio Pipeline (Workers 4, 5, 6 with Impeccable Polish & Metal CLI)**:
+   - Compile and validate Metal shaders using Xcode CLI: `xcrun -sdk iphonesimulator metal -c DirectionalMotionBlur.metal`.
+   - Apply Impeccable craft (`impeccable polish`, `impeccable animate`) to implement native Liquid Glass (`.ultraThinMaterial`, specular borders) and fluid velocity-envelope motion blur without jitter.
+   - Synthesize CoreHaptics and audio feedback matching original prototype cues.
+
+5. **Phase 4: Modular Debug Menu (Worker 7 with Codebase Design)**:
+   - Decouple diagnostics from main app UI into `TimelineDebug` sheet with pace sim, blur slider, and OLED Pure Black default.
+   - Attach gesture triggers (triple-tap/shake) using non-intrusive modifiers.
+
+6. **Phase 5: Documentation Pass (Worker 8 Haiku)**:
+   - Worker 8 generates a thorough `AGENT.md` in every package module directory explaining architecture seams and change vectors.
+
+7. **Phase 6: App Assembly & Xcode CLI Build Verification**:
+   - Wire root `AdaptiveTimelineApp.swift` container.
+   - Verify build and tests via Xcode CLI:
+     ```bash
+     swift test
+     xcodebuild -scheme AdaptiveTimeline -destination 'generic/platform=iOS Simulator' build
+     ```
+   - Optionally test launch readiness with `xcrun simctl`.
+
+8. **Phase 7: Code Review & Git CLI Publish**:
+   - Run Matt Pocock `/code-review` across standards and spec compliance.
+   - Stage and commit with Git CLI, verify zero em-dashes, and push to GitHub origin.
