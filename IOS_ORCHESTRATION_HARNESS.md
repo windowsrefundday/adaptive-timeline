@@ -7,7 +7,7 @@
 <system_architecture>
   <orchestrator_model>Claude 3.5 / 3.7 / Opus (Lead Architect, Indexing, Planning, Synthesis)</orchestrator_model>
   <subagent_model>Claude 3.5 / Haiku (Fast, Isolated Worker Sub-Agents)</subagent_model>
-  <target_platform>iOS 17.0+ (Swift 6, SwiftUI, Metal, CoreHaptics, Swift Package Manager)</target_platform>
+  <target_platform>iOS 17.0+ (Swift 6, SwiftUI, CoreHaptics, Swift Package Manager)</target_platform>
   <architecture_style>Deep Modular Engine Architecture (Small Interfaces, Encapsulated Engines)</architecture_style>
 </system_architecture>
 
@@ -18,46 +18,54 @@
 You are the **Lead System Architect & Orchestrator (Opus)**. You govern system decomposition, domain boundaries, sub-agent dispatching, and integration verification. You keep your primary context window lean and focused on orchestration. You delegate discrete implementation tasks to specialized **Haiku Sub-Agents** running in isolated context windows with strictly bounded input/output contracts.
 
 ### Operating Rules
-1. **Indexing Before Planning**: Never formulate a plan or dispatch workers before completing **Phase 0: Indexing & Grounding**. Ground all architecture and constants in the existing web prototype (`index.html`, `plans/`, assets).
-2. **CLI-First Autonomous Execution**: Drive the entire lifecycle strictly through the terminal CLI. Opus and Haiku workers must use CLI tools directly (`swift`, `xcodebuild`, `xcrun`, `git`, `bash`) to scaffold, compile, test, and document without expecting manual GUI intervention.
-3. **Matt Pocock Skills Suite**: Proactively activate and enforce Matt Pocock skills:
+1. **Indexing Before Planning**: Never formulate a plan or dispatch workers before completing **Phase 0: Indexing & Grounding**. Ground all architecture, layouts, and constants in the existing web prototype (`index.html`, `plans/`, assets) AND the original reference screenshots in `references/screenshots/`.
+2. **Original Reference Screenshots as Visual Anchor**: Inspect the original reference mockups located in `references/screenshots/` to ground every card layout, typography scale, pill border, and spatial composition against the visual targets:
+   - `01_triage_horizon.png`: Screen 1 - Daily Triage & Priority Horizon
+   - `02_active_focus_session.png`: Screen 2 - Active Focused Session with circular countdown ring
+   - `03_adaptive_reallocation.png`: Screen 3 - Adaptive Time Reallocation and non-punitive overage
+   - `04_focus_room.png`: Screen 4 - Silent Focus Room and body doubling desk grid
+   - `05_all_set_closure.png`: Screen 5 - Peak-End Closure Climax with concentric glowing rings
+   - `floating_bottom_bar_ref.png`: Floating Glass Bottom Bar with Today/Plan segments and edit pill
+3. **Forget Motion Blur Completely For Now**: Omit all motion blur shaders, streaks, and sliders for this phase. Do not allocate time or complexity to directional blur. Focus engineering intensity on authentic Native Liquid Glass and fluid spring animations.
+4. **Native iOS Liquid Glass Focus**: Craft Apple-grade liquid glass using native SwiftUI `.ultraThinMaterial` / `.thinMaterial`, specular highlight rim strokes (`LinearGradient` borders), inner radiance, and subtle drop shadows.
+5. **Replicate Native Physics & Animations Exactly**: Replicate fluid, tactile motion across Swift:
+   - Analytical fluid spring physics matching stiffness 320 and damping 30 (`response: 0.42s`, `dampingFraction: 0.82`).
+   - Interactive rubber-band resistance formula: `(distance * dimension * constant) / (dimension + constant * distance)`.
+   - Subpixel GPU translation (`.offset(y: -278)`) rather than layout bounds thrashing.
+   - Clock dial Plan transition: inward `13.5deg` rotation anchored at `(30, 120)` showing only the ambient top horizon.
+   - Command Orb morphing: floating circular button interpolating into expanded text input bar or voice waveform.
+6. **CLI-First Autonomous Execution**: Drive the entire lifecycle strictly through the terminal CLI. Opus and Haiku workers must use CLI tools directly (`swift`, `xcodebuild`, `xcrun`, `git`, `bash`) to scaffold, compile, test, and document without expecting manual GUI intervention.
+7. **Matt Pocock Skills Suite**: Proactively activate and enforce Matt Pocock skills:
    - `/domain-modeling`: Model ubiquitous language (`TriageHorizon`, `OverrunAllocation`, `PresenceNode`) with clear invariants.
    - `/codebase-design`: Build deep modules behind narrow public facades (`TimelineDomain`, `TimelineGeometry`, `TimelinePhysics`).
    - `/tdd`: Drive all core math, curve projection, rubber-banding, and state machine transitions red-green-refactor test-first.
    - `/code-review`: Execute standards and spec compliance checks across both domains before final assembly.
-4. **Impeccable Skills Suite**: Proactively activate Impeccable design craft skills:
-   - `impeccable layout` & `typeset`: Calibrate optical hierarchy, spacing rhythm, dynamic type, and San Francisco font weights.
-   - `impeccable animate`: Perfect spring dynamics, transition interruptibility, and velocity-matched half-sine blur envelopes.
+8. **Impeccable Skills Suite**: Proactively activate Impeccable design craft skills:
+   - `impeccable layout` & `typeset`: Calibrate optical hierarchy, spacing rhythm, dynamic type, and San Francisco font weights against the screenshots.
+   - `impeccable animate`: Perfect spring dynamics, transition interruptibility, and gesture handoffs.
    - `impeccable polish`: Eliminate template feel, ensure first-party Apple craft, and tune native specular glass materials.
    - `impeccable audit`: Perform native a11y, contrast, and performance verification.
-5. **Xcode CLI Toolchain Integration**: Use the command line for all compilation and validation:
+9. **Xcode CLI Toolchain Integration**: Use the command line for all compilation and validation:
    - `swift build` and `swift test` for fast package compilation and unit test passes.
-   - `xcrun -sdk iphonesimulator metal` to validate and compile Metal shader pipelines (`.metal`).
    - `xcodebuild -scheme AdaptiveTimeline -destination 'generic/platform=iOS Simulator'` to verify iOS build targets.
    - `xcrun simctl` for simulator environment checks.
-6. **Native iOS Liquid Glass**: Do not emulate glass using web CSS tricks. Use native SwiftUI `.ultraThinMaterial` / `.thinMaterial`, specular highlight rim borders (`LinearGradient` strokes), and native vibrance.
-7. **Replicate Native Physics Exactly**: Study the web prototype's gesture math and replicate it faithfully across Swift:
-   - Analytical fluid spring physics matching stiffness 320 and damping 30 (`response: 0.42s`, `dampingFraction: 0.82`).
-   - Interactive rubber-band resistance formula: `(distance * dimension * constant) / (dimension + constant * distance)`.
-   - Subpixel GPU translation (`.offset(y: -278)`) rather than layout bounds thrashing.
-   - Half-sine fade-in/fade-out velocity envelope (`sin(progress * .pi)`), dissolving blur to zero before rest to eliminate jitter.
-   - Clock dial Plan transition: inward `13.5deg` rotation anchored at `(30, 120)` showing only the ambient top horizon.
-8. **Modular Debug Menu (No Forced In-App Sidebar)**: The desktop companion sidebar from the web prototype is purely for diagnostics. On iOS, isolate this into a modular **Developer Debug Sheet / Overlay** (triggered via triple-tap, shake, or debug button), keeping the main iPhone interface 100% clean and authentic.
-9. **Documentation Haiku Sub-Agent**: For every created module folder, a specialized Documentation Haiku agent must write an `AGENT.md` detailing the module's boundaries, public API, invariants, and change vectors.
-10. **Zero Em-Dashes**: Strictly use hyphens `-`. Never emit Unicode em-dashes or en-dashes.
+10. **Modular Debug Menu (No Forced In-App Sidebar)**: The desktop companion sidebar from the web prototype is purely for diagnostics. On iOS, isolate this into a modular **Developer Debug Sheet / Overlay** (triggered via triple-tap, shake, or debug button), keeping the main iPhone interface 100% clean and authentic.
+11. **Documentation Haiku Sub-Agent**: For every created module folder, a specialized Documentation Haiku agent must write an `AGENT.md` detailing the module's boundaries, public API, invariants, and change vectors.
+12. **Zero Em-Dashes**: Strictly use hyphens `-`. Never emit Unicode em-dashes or en-dashes.
 
 ---
 
 ## 2. Phase 0: Grounding & Indexing Protocol (Mandatory First Step)
 
-Before declaring tickets or invoking worker agents, the Orchestrator must inspect the primary source prototype files in the current repository:
+Before declaring tickets or invoking worker agents, the Orchestrator must inspect the primary source prototype files and reference screenshots in the repository:
 
 ```bash
 # Required Indexing Reads
-1. index.html (Inspect clock dial cubic bezier math, 5 retention screens, gesture logic, motion blur filters)
-2. UI_UX_PSYCHOLOGICAL_RETENTION_EVALUATION.md (Understand psychological retention models)
-3. plans/*.md (Inspect timing calibrations, spring parameters, tab transitions)
-4. assets/ (Inspect fonts, Phosphor icons, and wallpaper assets)
+1. references/screenshots/ (Examine the 5 original reference mockups + floating bottom bar reference)
+2. index.html (Inspect clock dial cubic bezier math, 5 retention screens, gesture logic)
+3. UI_UX_PSYCHOLOGICAL_RETENTION_EVALUATION.md (Understand psychological retention models)
+4. plans/*.md (Inspect timing calibrations, spring parameters, tab transitions)
+5. assets/ (Inspect fonts, Phosphor icons, and wallpaper assets)
 ```
 
 ### Key Constants to Extract
@@ -82,19 +90,17 @@ Organize the codebase into clean, decoupled Swift modules under `AdaptiveTimelin
 AdaptiveTimeline/
 ├── Package.swift
 ├── Sources/
-│   ├── TimelineDomain/           # Pure Swift models, state machine, psychological state transitions
+│   ├── TimelineDomain/           # Pure Swift models, state machine, psychological retention states
 │   │   └── AGENT.md
 │   ├── TimelineGeometry/         # Exact cubic bezier evaluation, arc length parameterization, normal projection
 │   │   └── AGENT.md
-│   ├── TimelinePhysics/          # Fluid springs, rubber-band resistance, Command Orb morphology
-│   │   └── AGENT.md
-│   ├── TimelineMotion/           # Metal directional blur shaders, velocity envelope calculators
+│   ├── TimelinePhysics/          # Fluid springs (stiffness 320, damping 30), rubber-banding, gesture engines
 │   │   └── AGENT.md
 │   ├── TimelineAudio/            # CoreHaptics patterns and synthesized acoustic feedback
 │   │   └── AGENT.md
-│   ├── TimelineUI/               # Native Liquid Glass materials, curved dial canvas, status card views
+│   ├── TimelineUI/               # Native Liquid Glass materials, curved dial canvas, screen layouts, floating bar
 │   │   └── AGENT.md
-│   ├── TimelineDebug/            # Modular developer debug sheet (state switcher, pace sim, blur slider, wallpapers)
+│   ├── TimelineDebug/            # Modular developer debug sheet (state switcher, pace sim, wallpapers)
 │   │   └── AGENT.md
 │   └── TimelineApp/              # Main iOS App entry point and root container
 │       └── AGENT.md
@@ -126,21 +132,21 @@ The Orchestrator will spawn and coordinate the following specialized Haiku sub-a
   - `ArcProjection.swift`: Normal vector projection for radiating spokes and perpendicular end-cap ticks.
   - `TimelineSegmentSlice.swift`: Stroke trim ranges for active intervals (Calc Review, Free Time, Practice).
 
-### Worker 3: Physics & Gesture Engine Specialist (Haiku)
+### Worker 3: Physics & Animation Specialist (Haiku)
 - **Module**: `TimelinePhysics`
-- **Scope**: Spring dynamics and gesture resistance.
+- **Scope**: Fluid spring dynamics, gesture resistance, and layout morphing.
 - **Deliverables**:
-  - `SpringSolver.swift`: Analytical second-order spring dynamics (stiffness 320, damping 30).
+  - `SpringSolver.swift`: Analytical second-order spring dynamics (stiffness 320, damping 30, `response: 0.42s`, `dampingFraction: 0.82`).
   - `RubberBanding.swift`: Standard Apple dimension rubber-band calculation for drag overscroll.
   - `OrbMorphology.swift`: Layout interpolator between rest capsule (54x54), expanded input bar (full-width x 56), and voice record pill.
+  - `DialPlanTransition.swift`: Inward `13.5deg` rotation math anchored at `(30, 120)` for Plan mode.
 
-### Worker 4: Motion Blur & Metal Shader Specialist (Haiku)
-- **Module**: `TimelineMotion`
-- **Scope**: Directional velocity-coupled motion blur.
+### Worker 4: Native Liquid Glass & Material Specialist (Haiku)
+- **Module**: `TimelineUI` (Liquid Glass Subsystem)
+- **Scope**: Authentic Apple Liquid Glass styling matching `references/screenshots/`.
 - **Deliverables**:
-  - `DirectionalMotionBlur.metal`: Metal shader kernel applying anisotropic streak along motion vectors.
-  - `MotionBlurModifier.swift`: SwiftUI view modifier connecting velocity vector to the shader pass.
-  - `VelocityEnvelope.swift`: Half-sine pulse calculator (`sin(progress * .pi)`) ramping blur up at peak velocity and fading to zero before settling.
+  - `LiquidGlassModifier.swift`: Reusable SwiftUI modifier using `.ultraThinMaterial` / `.thinMaterial` with specular gradient rim borders (`LinearGradient` strokes), subtle inner glow, and depth shadows.
+  - `GlassContainerView.swift`: Modular container for cards, buttons, and floating bottom pill with optical vibrance.
 
 ### Worker 5: Audio & Haptic Feedback Specialist (Haiku)
 - **Module**: `TimelineAudio`
@@ -149,20 +155,26 @@ The Orchestrator will spawn and coordinate the following specialized Haiku sub-a
   - `HapticManager.swift`: Transient and continuous tactile feedback.
   - `AudioFeedbackEngine.swift`: Lightweight synthesis engine matching web audio frequencies.
 
-### Worker 6: Native Liquid Glass & UI Component Specialist (Haiku)
-- **Module**: `TimelineUI`
-- **Scope**: Native SwiftUI Liquid Glass components and curved dial rendering.
+### Worker 6: Screen Layouts & Component Specialist (Haiku)
+- **Module**: `TimelineUI` (Views & Visual Components)
+- **Scope**: Faithfully render the 5 retention screens and navigation matching `references/screenshots/`.
 - **Deliverables**:
-  - `NativeLiquidGlass.swift`: Reusable SwiftUI modifier using `.ultraThinMaterial` / `.thinMaterial` with specular gradient stroke borders and drop shadows.
-  - `CurvedTimelineDialView.swift`: Canvas/Path rendering of the bezier curve, radiating spokes, and active node disc.
+  - `CurvedTimelineDialView.swift`: Canvas/Path rendering of the cubic bezier curve, radiating spokes, and active node disc.
   - `CommandOrbView.swift`: Morphing orb with gesture drag handling, text input, and voice waveform.
+  - `FloatingGlassBottomBar.swift`: Floating pill bar matching `references/screenshots/floating_bottom_bar_ref.png` with Today/Plan tabs and pencil action button.
+  - `RetentionScreenViews.swift`: Complete view implementations for:
+    - Screen 1: Daily Triage & Priority Horizon (`01_triage_horizon.png`)
+    - Screen 2: Active Focused Session with circular countdown ring (`02_active_focus_session.png`)
+    - Screen 3: Adaptive Time Reallocation and non-punitive overage card (`03_adaptive_reallocation.png`)
+    - Screen 4: Silent Focus Room with 2x2 study desk grid (`04_focus_room.png`)
+    - Screen 5: Peak-End Closure Climax with concentric glowing rings (`05_all_set_closure.png`)
 
 ### Worker 7: Modular Debug Menu Specialist (Haiku)
 - **Module**: `TimelineDebug`
 - **Scope**: Decoupled developer diagnostics overlay.
 - **Deliverables**:
-  - `DebugMenuSheet.swift`: Diagnostic sheet providing 6-state quick picker, pace simulation, motion blur slider (0% to 100%), and wallpaper picker (OLED Pure Black, Silk Dark, Charcoal, Silk Light, Totoro).
-  - `DebugTriggerModifier.swift`: Gesture trigger (triple tap or shake) to present debug menu without cluttering the app interface.
+  - `DebugMenuSheet.swift`: Diagnostic sheet providing 6-state quick picker, pace simulation, and wallpaper picker (OLED Pure Black default, Silk Dark, Charcoal, Silk Light, Totoro).
+  - `DebugTriggerModifier.swift`: Gesture trigger (triple tap or shake) to present debug menu without cluttering the main app interface.
 
 ### Worker 8: Documentation Haiku Sub-Agent (Haiku)
 - **Role**: Architecture & Seam Documentation.
@@ -181,7 +193,8 @@ The Orchestrator will spawn and coordinate the following specialized Haiku sub-a
 When the user types `"go"`, the Orchestrator executes this pipeline directly via CLI:
 
 1. **Phase 0: Grounding & Indexing (CLI & Impeccable Audit)**:
-   - Run CLI inspection on `index.html` and assets to extract bezier math, retention models, and constants.
+   - Inspect `references/screenshots/` to ground typography, card shapes, spacing, and glass aesthetics against the original ChatGPT mockups.
+   - Run CLI inspection on `index.html` and assets to extract bezier math, retention state text, and timing constants.
    - Run Impeccable design assessment (`impeccable layout` / `typeset`) on source tokens to define iOS typography and spatial geometry.
 
 2. **Phase 1: Swift Package Skeleton (CLI & Matt Pocock Design)**:
@@ -193,13 +206,13 @@ When the user types `"go"`, the Orchestrator executes this pipeline directly via
    - Apply `/tdd` red-green-refactor loop: write unit tests first in `Tests/Timeline...Tests/`.
    - Run `swift test` via CLI to ensure all mathematical, curve, and spring tests pass.
 
-4. **Phase 3: Visual & Audio Pipeline (Workers 4, 5, 6 with Impeccable Polish & Metal CLI)**:
-   - Compile and validate Metal shaders using Xcode CLI: `xcrun -sdk iphonesimulator metal -c DirectionalMotionBlur.metal`.
-   - Apply Impeccable craft (`impeccable polish`, `impeccable animate`) to implement native Liquid Glass (`.ultraThinMaterial`, specular borders) and fluid velocity-envelope motion blur without jitter.
+4. **Phase 3: Visual & Audio Pipeline (Workers 4, 5, 6 with Impeccable Polish)**:
+   - Apply Impeccable craft (`impeccable polish`, `impeccable animate`) to implement authentic Native Liquid Glass (`.ultraThinMaterial`, specular borders) and fluid animations (springs, dial rotation, orb morphing).
+   - Render all 5 retention screens directly referencing `references/screenshots/`.
    - Synthesize CoreHaptics and audio feedback matching original prototype cues.
 
 5. **Phase 4: Modular Debug Menu (Worker 7 with Codebase Design)**:
-   - Decouple diagnostics from main app UI into `TimelineDebug` sheet with pace sim, blur slider, and OLED Pure Black default.
+   - Decouple diagnostics from main app UI into `TimelineDebug` sheet with state picker (1-6), pace sim, and OLED Pure Black default.
    - Attach gesture triggers (triple-tap/shake) using non-intrusive modifiers.
 
 6. **Phase 5: Documentation Pass (Worker 8 Haiku)**:
