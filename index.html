@@ -1,0 +1,3345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
+<meta name="color-scheme" content="light dark" />
+<title>Adaptive Timeline & Command Orb</title>
+<link rel="preload" href="assets/fonts/geist-400.woff2" as="font" type="font/woff2" crossorigin />
+<link rel="preload" href="assets/totoro-sunflowers.png" as="image" />
+<link rel="preload" href="assets/silk-dark.jpg" as="image" />
+<link rel="stylesheet" href="assets/phosphor/light.css" />
+<link rel="stylesheet" href="assets/phosphor/fill.css" />
+<link rel="stylesheet" href="assets/phosphor/bold.css" />
+<style>
+  @font-face { font-family: "Geist"; src: url("assets/fonts/geist-300.woff2") format("woff2"); font-weight: 300; font-display: swap; }
+  @font-face { font-family: "Geist"; src: url("assets/fonts/geist-400.woff2") format("woff2"); font-weight: 400; font-display: swap; }
+  @font-face { font-family: "Geist"; src: url("assets/fonts/geist-500.woff2") format("woff2"); font-weight: 500; font-display: swap; }
+  @font-face { font-family: "Geist"; src: url("assets/fonts/geist-600.woff2") format("woff2"); font-weight: 600; font-display: swap; }
+
+  @property --ang { syntax: '<angle>'; inherits: false; initial-value: 210deg; }
+
+  :root {
+    /* Authentic Apple Spring Physics */
+    --apple-morph: linear(0.0 0.0%, 0.0268 2.9%, 0.0935 5.9%, 0.1834 8.8%, 0.2843 11.8%, 0.3874 14.7%, 0.4868 17.6%, 0.5788 20.6%, 0.6612 23.5%, 0.7331 26.5%, 0.7944 29.4%, 0.8455 32.4%, 0.8874 35.3%, 0.9209 38.2%, 0.9472 41.2%, 0.9673 44.1%, 0.9824 47.1%, 0.9933 50.0%, 1.0009 52.9%, 1.0059 55.9%, 1.009 58.8%, 1.0106 61.8%, 1.0111 64.7%, 1.0109 67.6%, 1.0102 70.6%, 1.0092 73.5%, 1.0081 76.5%, 1.007 79.4%, 1.0059 82.4%, 1.0048 85.3%, 1.0039 88.2%, 1.0031 91.2%, 1.0024 94.1%, 1.0018 97.1%, 1.0013 100.0%);
+    --apple-morph-dur: 0.42s;
+
+    --apple-snappy: linear(0.0 0.0%, 0.0296 2.9%, 0.1031 5.9%, 0.2018 8.8%, 0.3118 11.8%, 0.4232 14.7%, 0.5294 17.6%, 0.6262 20.6%, 0.7114 23.5%, 0.7842 26.5%, 0.8446 29.4%, 0.8935 32.4%, 0.9319 35.3%, 0.9613 38.2%, 0.983 41.2%, 0.9984 44.1%, 1.0088 47.1%, 1.0152 50.0%, 1.0186 52.9%, 1.0199 55.9%, 1.0196 58.8%, 1.0183 61.8%, 1.0165 64.7%, 1.0143 67.6%, 1.0121 70.6%, 1.0099 73.5%, 1.008 76.5%, 1.0062 79.4%, 1.0047 82.4%, 1.0034 85.3%, 1.0024 88.2%, 1.0015 91.2%, 1.0009 94.1%, 1.0004 97.1%, 1.0001 100.0%);
+    --apple-snappy-dur: 0.32s;
+
+    --apple-soft: cubic-bezier(0.22, 1, 0.32, 1);
+    --apple-soft-dur: 0.44s;
+    --apple-soft-exit-dur: 0.38s;
+    --apple-kbd: cubic-bezier(0.22, 1, 0.32, 1);
+
+    --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+    --dur-fast: 160ms;
+    --dur-base: 240ms;
+
+    --bar-h: 54px;
+    --bar-bot: 28px;
+    --kbd-h: 296px;
+
+    /* Light Theme (matches reference screens with full Liquid Glass shader) */
+    --bg: #e4e7ec;
+    --ink: #15171b;
+    --ink-2: rgba(21, 23, 27, 0.76);
+    --ink-3: rgba(21, 23, 27, 0.55);
+    --hair: rgba(20, 24, 30, 0.09);
+    --sheet: rgba(255, 255, 255, 0.68);
+    --sheet-solid: #ffffff;
+    --glass-top: rgba(255, 255, 255, 0.72);
+    --glass-bot: rgba(255, 255, 255, 0.28);
+    --rim: rgba(255, 255, 255, 1);
+    --lip: rgba(60, 70, 85, 0.22);
+    --shadow: 48, 58, 76;
+    --scrim: rgba(214, 219, 227, 0.48);
+    --accent: #1e2229;
+    --accent-ink: #ffffff;
+    --solid: #ffffff;
+
+    --c-calc: #736996;
+    --c-apush: #7d7256;
+    --c-free: #668c71;
+    --c-practice: #a3535d;
+    --c-warn: #a3535d;
+    --c-teal: #1f5f5b;
+    --c-forest: #1e3828;
+    --c-presence: #52a46b;
+
+    --wall: none;
+    --wall-color: #000000;
+    --wall-tint: none;
+    --frame: #c8ccd2;
+    --frame-edge: #9ea3ab;
+    --rec: #c2414b;
+  }
+
+  :root[data-theme="dark"] {
+    --bg: #0b0c0f;
+    --ink: #eceef2;
+    --ink-2: rgba(236, 238, 242, 0.76);
+    --ink-3: rgba(236, 238, 242, 0.56);
+    --hair: rgba(255, 255, 255, 0.09);
+    --sheet: rgba(18, 22, 28, 0.58);
+    --sheet-solid: #181c24;
+    --glass-top: rgba(255, 255, 255, 0.16);
+    --glass-bot: rgba(255, 255, 255, 0.035);
+    --rim: rgba(255, 255, 255, 0.85);
+    --lip: rgba(0, 0, 0, 0.5);
+    --shadow: 4, 6, 10;
+    --scrim: rgba(6, 8, 12, 0.68);
+    --accent: #e5e8ee;
+    --accent-ink: #121418;
+    --solid: #181c24;
+
+    --c-calc: #9d94be;
+    --c-apush: #a99d80;
+    --c-free: #8fb199;
+    --c-practice: #d97881;
+    --c-warn: #d97881;
+    --c-teal: #48a9a2;
+    --c-forest: #8fb199;
+
+    --wall: none;
+    --wall-color: #000000;
+    --wall-tint: none;
+    --frame: #1e2229;
+    --frame-edge: #3b3e45;
+  }
+
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html, body { margin: 0; height: 100%; }
+  body {
+    background: radial-gradient(1200px 800px at 60% 25%, color-mix(in srgb, var(--bg) 84%, var(--ink) 5%), var(--bg) 70%);
+    font-family: "Geist", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+    color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+    display: grid;
+    grid-template-columns: auto minmax(0, 320px);
+    align-items: center;
+    justify-content: center;
+    gap: 48px;
+    min-height: 100dvh;
+    overflow: hidden;
+    transition: background 0.5s ease, color 0.5s ease;
+  }
+  button { font: inherit; color: inherit; border: 0; background: none; padding: 0; cursor: pointer; }
+  i[class*="ph-"] { line-height: 1; display: inline-block; }
+
+  /* Device frame */
+  .phone {
+    position: relative;
+    width: 390px;
+    height: 844px;
+    border-radius: 56px;
+    overflow: hidden;
+    isolation: isolate;
+    background: var(--bg);
+    box-shadow:
+      0 0 0 10px var(--frame), 0 0 0 11.5px var(--frame-edge),
+      0 60px 120px -20px rgba(var(--shadow), 0.55), 0 30px 60px -30px rgba(var(--shadow), 0.45);
+    transition: box-shadow 0.5s ease;
+    user-select: none;
+    -webkit-user-select: none;
+    --wall-x: 0px;
+    --wall-scale: 1;
+  }
+  @media (max-width: 760px) {
+    body { display: block; }
+    .phone { width: 100vw; height: 100dvh; border-radius: 0; box-shadow: none; }
+    .side { display: none !important; }
+  }
+
+  /* Wallpaper with Parallax */
+  .wallpaper {
+    position: absolute;
+    inset: -30px;
+    background-image: var(--wall);
+    background-color: var(--wall-color, #000000);
+    background-size: cover;
+    background-position: center top;
+    filter: saturate(1.05) brightness(1.02);
+    transform: scale(1.02) translate3d(0, 0, 0);
+    transition: transform 0.75s cubic-bezier(0.25, 1, 0.3, 1), filter 0.6s ease, background-color 0.4s ease;
+    z-index: 0;
+    pointer-events: none;
+  }
+  .phone[data-tab="plan"] .wallpaper,
+  .phone[data-screen="plan"] .wallpaper {
+    transform: scale(1.09) translate3d(-20px, -28px, 0);
+    filter: saturate(1.08) brightness(1.04);
+  }
+  .phone::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 70;
+    pointer-events: none;
+    opacity: 0.06;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  /* Dynamic Island & Hardware Status Bar */
+  .island {
+    position: absolute;
+    top: 11px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 124px;
+    height: 36px;
+    border-radius: 20px;
+    background: #050506;
+    z-index: 50;
+  }
+  .statusbar {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 54px;
+    z-index: 49;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6px 32px 0 44px;
+    font-weight: 600;
+    font-size: 16px;
+    pointer-events: none;
+    font-variant-numeric: tabular-nums;
+  }
+  .statusbar .icons { display: flex; gap: 6px; font-size: 17px; }
+  .home-ind {
+    position: absolute;
+    bottom: 8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 136px;
+    height: 5px;
+    border-radius: 3px;
+    background: var(--ink);
+    opacity: 0.8;
+    z-index: 60;
+    pointer-events: none;
+  }
+
+  /* ---------- Authentic Apple Liquid Glass Material ---------- */
+  .glass {
+    position: relative;
+    background: linear-gradient(180deg, var(--glass-top), var(--glass-bot));
+    -webkit-backdrop-filter: blur(24px) saturate(135%) brightness(1.06) contrast(1.03);
+            backdrop-filter: blur(24px) saturate(135%) brightness(1.06) contrast(1.03);
+    border-radius: 22px;
+    box-shadow:
+      inset 0 1.5px 0 rgba(255, 255, 255, 0.65),
+      inset 0 -2px 3px var(--lip),
+      inset 0 -14px 24px -14px rgba(255, 255, 255, 0.18),
+      0 18px 36px -10px rgba(var(--shadow), 0.35),
+      0 4px 12px -2px rgba(var(--shadow), 0.18);
+    transition: transform var(--dur-fast) var(--ease-out), box-shadow var(--dur-fast) var(--ease-out);
+  }
+  .glass::before { /* Specular bloom */
+    content: ''; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; z-index: 2;
+    background:
+      radial-gradient(110% 80% at 26% -12%, rgba(255, 255, 255, 0.42), transparent 48%),
+      radial-gradient(80% 60% at 84% 118%, rgba(255, 255, 255, 0.15), transparent 60%);
+    mix-blend-mode: screen;
+  }
+  .glass::after { /* Metallic chrome rim */
+    content: ''; position: absolute; inset: 0; border-radius: inherit; padding: 1.2px; pointer-events: none; z-index: 3;
+    background: conic-gradient(from var(--ang),
+      var(--rim), rgba(255,255,255,0.15) 16%, rgba(255,255,255,0.65) 30%, rgba(255,255,255,0.08) 48%,
+      rgba(255,255,255,0.6) 66%, rgba(255,255,255,0.12) 84%, var(--rim));
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor; mask-composite: exclude;
+  }
+
+  /* Main Scrolling Container */
+  .app {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 60px 14px 120px 14px;
+    scrollbar-width: none;
+    transition: transform var(--apple-morph-dur) var(--apple-morph), opacity 0.4s ease;
+  }
+  .app::-webkit-scrollbar { display: none; }
+  .phone[data-state="text"] .app,
+  .phone[data-state="voice"] .app,
+  .phone[data-state="parsing"] .app {
+    transform: scale(0.965);
+    filter: blur(0.5px);
+  }
+
+  /* ----------------- Signature Left Curved Timeline Arc ----------------- */
+  .timeline-arc-wrap {
+    position: absolute;
+    inset: 0;
+    width: 390px;
+    height: 844px;
+    pointer-events: none;
+    z-index: 5;
+    transform-origin: 30px 120px;
+    will-change: transform;
+    transition: transform 0.65s cubic-bezier(0.25, 1, 0.3, 1), opacity 0.5s ease;
+  }
+  .phone[data-screen="focus-room"] .timeline-arc-wrap {
+    opacity: 0;
+    transform: translateX(-40px);
+    pointer-events: none;
+  }
+  .phone[data-tab="plan"] .timeline-arc-wrap,
+  .phone[data-screen="plan"] .timeline-arc-wrap {
+    transform: translate3d(-34px, -8px, 0) rotate(13.5deg) scale(0.88);
+    opacity: 0.88;
+  }
+
+  /* In Plan mode, hide bottom elements and keep top sliver ambient */
+  .phone[data-tab="plan"] #callout-calc,
+  .phone[data-screen="plan"] #callout-calc,
+  .phone[data-tab="plan"] .arc-num-3,
+  .phone[data-screen="plan"] .arc-num-3 {
+    opacity: 0.42;
+    transition: opacity 0.4s ease;
+  }
+
+  .phone[data-tab="plan"] #callout-free,
+  .phone[data-screen="plan"] #callout-free,
+  .phone[data-tab="plan"] #callout-practice,
+  .phone[data-screen="plan"] #callout-practice,
+  .phone[data-tab="plan"] #spoke-4,
+  .phone[data-screen="plan"] #spoke-4,
+  .phone[data-tab="plan"] #spoke-5,
+  .phone[data-screen="plan"] #spoke-5,
+  .phone[data-tab="plan"] #node-435,
+  .phone[data-screen="plan"] #node-435,
+  .phone[data-tab="plan"] #node-540,
+  .phone[data-screen="plan"] #node-540,
+  .phone[data-tab="plan"] .arc-num-4,
+  .phone[data-screen="plan"] .arc-num-4,
+  .phone[data-tab="plan"] .arc-num-5,
+  .phone[data-screen="plan"] .arc-num-5,
+  .phone[data-tab="plan"] .arc-num-6,
+  .phone[data-screen="plan"] .arc-num-6 {
+    opacity: 0;
+    transform: translateX(-24px);
+    transition: opacity 0.35s ease, transform 0.5s cubic-bezier(0.25, 1, 0.3, 1);
+  }
+
+  .arc-svg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+  }
+  .crescent-bg {
+    fill: url(#crescentGrad);
+    transition: fill 0.4s ease;
+  }
+  [data-theme="dark"] .crescent-bg {
+    fill: url(#crescentGradDark);
+  }
+  .arc-track-bg {
+    fill: none;
+    stroke: rgba(255, 255, 255, 0.45);
+    stroke-width: 7.5;
+    stroke-linecap: round;
+  }
+  [data-theme="dark"] .arc-track-bg {
+    stroke: rgba(255, 255, 255, 0.14);
+  }
+  .arc-seg {
+    fill: none;
+    stroke-width: 7.5;
+    stroke-linecap: round;
+    transition: stroke-dasharray 0.5s var(--apple-soft), stroke-dashoffset 0.5s var(--apple-soft), stroke 0.4s ease, opacity 0.4s ease;
+  }
+  .arc-seg.calc {
+    stroke: #b4a2cb;
+  }
+  .arc-seg.free {
+    stroke: #a8c59f;
+  }
+  .arc-seg.practice {
+    stroke: #b96f79;
+  }
+  [data-theme="dark"] .arc-seg.calc { stroke: #c5b4dc; }
+  [data-theme="dark"] .arc-seg.free { stroke: #b8d5af; }
+  [data-theme="dark"] .arc-seg.practice { stroke: #d0858e; }
+
+  .arc-spoke {
+    stroke: rgba(255, 255, 255, 0.95);
+    stroke-width: 1.5;
+    stroke-linecap: round;
+    transition: all 0.4s var(--apple-soft);
+  }
+  [data-theme="dark"] .arc-spoke {
+    stroke: rgba(255, 255, 255, 0.85);
+  }
+  .arc-tick-cap {
+    stroke-linecap: round;
+  }
+
+  .active-node-aura {
+    animation: nodePulse 2.4s ease-in-out infinite;
+    transform-origin: center;
+  }
+  @keyframes nodePulse {
+    0%, 100% { r: 10px; opacity: 0.4; }
+    50% { r: 15px; opacity: 0.15; }
+  }
+
+  .arc-num {
+    position: absolute;
+    font-size: 16px;
+    font-weight: 500;
+    color: #4a5568;
+    font-variant-numeric: tabular-nums;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    user-select: none;
+    transition: color 0.3s ease, opacity 0.35s ease, transform 0.5s var(--apple-soft);
+  }
+  [data-theme="dark"] .arc-num {
+    color: #cbd5e1;
+  }
+
+  .arc-label {
+    position: absolute;
+    pointer-events: none;
+    user-select: none;
+    transition: top 0.45s var(--apple-soft), left 0.45s var(--apple-soft), opacity 0.35s ease, transform 0.5s var(--apple-soft);
+  }
+  .arc-label .label-name {
+    font-size: 14.5px;
+    font-weight: 700;
+    line-height: 1.15;
+    letter-spacing: -0.015em;
+    display: block;
+    margin-bottom: 2px;
+  }
+  .arc-label .label-time {
+    font-size: 11.5px;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    font-variant-numeric: tabular-nums;
+    display: block;
+    opacity: 0.85;
+  }
+  .arc-label.calc {
+    color: #4d3b64;
+  }
+  .arc-label.calc .label-time {
+    color: #78648f;
+  }
+  .arc-label.free {
+    color: #284f3e;
+  }
+  .arc-label.free .label-time {
+    color: #4b7361;
+  }
+  .arc-label.practice {
+    color: #6a2a32;
+  }
+  .arc-label.practice .label-time {
+    color: #8e4e58;
+  }
+  [data-theme="dark"] .arc-label.calc { color: #ddd0ed; }
+  [data-theme="dark"] .arc-label.calc .label-time { color: #b7a4cb; }
+  [data-theme="dark"] .arc-label.free { color: #c4e9d0; }
+  [data-theme="dark"] .arc-label.free .label-time { color: #9bc7a9; }
+  [data-theme="dark"] .arc-label.practice { color: #f5bcc2; }
+  [data-theme="dark"] .arc-label.practice .label-time { color: #d8969e; }
+
+  /* ----------------- Screen Views Container ----------------- */
+  .views-wrapper {
+    position: relative;
+    width: 100%;
+    min-height: 640px;
+    padding-left: 136px;
+    padding-right: 16px;
+    transition: padding-left 0.65s cubic-bezier(0.25, 1, 0.3, 1), padding-right 0.65s cubic-bezier(0.25, 1, 0.3, 1);
+  }
+  .phone[data-screen="focus-room"] .views-wrapper {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+  .phone[data-tab="plan"] .views-wrapper,
+  .phone[data-screen="plan"] .views-wrapper {
+    padding-left: 24px;
+    padding-right: 20px;
+  }
+
+  .screen-view {
+    display: none;
+    opacity: 0;
+    transform: translateY(14px);
+    transition: opacity var(--apple-soft-dur) var(--apple-soft), transform var(--apple-soft-dur) var(--apple-soft);
+  }
+  .screen-view.active {
+    display: block;
+    opacity: 1;
+    transform: none;
+    animation: screenEnter var(--apple-soft-dur) var(--apple-soft) both;
+  }
+  @keyframes screenEnter {
+    from { opacity: 0; transform: translateY(16px); filter: blur(4px); }
+    to { opacity: 1; transform: none; filter: none; }
+  }
+
+  /* Typography */
+  .eyebrow {
+    font-size: 11.5px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    margin: 4px 2px 8px 2px;
+  }
+  h1.screen-title {
+    font-size: 32px;
+    line-height: 1.08;
+    letter-spacing: -0.03em;
+    margin: 0 2px 8px 2px;
+    font-weight: 500;
+    color: var(--ink);
+  }
+  p.screen-subtitle {
+    font-size: 14.5px;
+    line-height: 1.35;
+    color: var(--ink-2);
+    margin: 0 2px 20px 2px;
+    letter-spacing: -0.01em;
+  }
+
+  /* Card Components */
+  .task-card {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 14px;
+    margin-bottom: 12px;
+    cursor: pointer;
+  }
+  .task-card:active { transform: scale(0.98); }
+  .task-badge {
+    width: 38px;
+    height: 38px;
+    border-radius: 12px;
+    display: grid;
+    place-items: center;
+    color: #ffffff;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+  .task-badge.calc { background: var(--c-calc); }
+  .task-badge.apush { background: var(--c-apush); }
+  .task-badge.done { background: var(--c-free); }
+  .task-badge.warn { background: var(--c-warn); }
+
+  .task-info { flex: 1; min-width: 0; }
+  .task-title { font-size: 16px; font-weight: 500; letter-spacing: -0.01em; margin-bottom: 2px; }
+  .task-sub { font-size: 13px; color: var(--ink-2); }
+  .task-note { font-size: 12px; color: var(--ink-3); margin-top: 2px; }
+  .task-arrow {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.04);
+    display: grid;
+    place-items: center;
+    color: var(--ink-3);
+    font-size: 14px;
+    flex-shrink: 0;
+  }
+  .phone[data-theme="dark"] .task-arrow { background: rgba(255, 255, 255, 0.08); }
+
+  /* Context Alert Card (COMING UP) */
+  .card-coming-up {
+    padding: 16px 16px;
+    margin-bottom: 16px;
+  }
+  .coming-up-stat {
+    font-size: 16.5px;
+    line-height: 1.35;
+    font-weight: 400;
+    color: var(--ink);
+    margin: 4px 0 14px 0;
+  }
+  .coming-up-stat strong {
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--c-calc);
+    letter-spacing: -0.02em;
+    vertical-align: baseline;
+  }
+  .card-divider {
+    height: 1px;
+    background: var(--hair);
+    margin: 12px 0;
+  }
+  .coming-up-sub {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    font-size: 13px;
+    line-height: 1.35;
+    color: var(--ink-2);
+  }
+  .coming-up-sub i {
+    font-size: 18px;
+    color: var(--ink-3);
+    margin-top: 1px;
+    flex-shrink: 0;
+  }
+  .highlight-green {
+    font-weight: 600;
+    color: var(--c-teal);
+  }
+
+  /* ----------------- Screen 2: Active Focus ----------------- */
+  .card-gauge {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 24px 16px;
+    margin-bottom: 12px;
+  }
+  .gauge-svg-wrap {
+    position: relative;
+    width: 170px;
+    height: 170px;
+    display: grid;
+    place-items: center;
+  }
+  .gauge-svg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    transform: rotate(-90deg);
+  }
+  .gauge-track {
+    fill: none;
+    stroke: rgba(0, 0, 0, 0.06);
+    stroke-width: 12;
+  }
+  .phone[data-theme="dark"] .gauge-track { stroke: rgba(255, 255, 255, 0.08); }
+  .gauge-fill {
+    fill: none;
+    stroke: var(--c-calc);
+    stroke-width: 12;
+    stroke-linecap: round;
+    stroke-dasharray: 414;
+    stroke-dashoffset: 140;
+    transition: stroke-dashoffset 0.8s var(--apple-soft);
+  }
+  .gauge-content {
+    text-align: center;
+    position: relative;
+    z-index: 2;
+  }
+  .gauge-content .val {
+    font-size: 32px;
+    font-weight: 600;
+    letter-spacing: -0.03em;
+    line-height: 1;
+    color: var(--ink);
+  }
+  .gauge-content .lbl {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    margin: 4px 0 2px 0;
+  }
+  .gauge-content .range {
+    font-size: 12px;
+    color: var(--ink-3);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .card-step {
+    padding: 14px 16px;
+    margin-bottom: 12px;
+  }
+  .card-step .step-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .card-step .step-title {
+    font-size: 17px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+  .card-step .step-desc {
+    font-size: 13.5px;
+    color: var(--ink-2);
+    margin-top: 4px;
+    line-height: 1.35;
+  }
+
+  .btn-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 14px;
+  }
+  .btn-primary-dark {
+    width: 100%;
+    height: 48px;
+    border-radius: 999px;
+    background: var(--accent);
+    color: var(--accent-ink);
+    font-size: 15px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    box-shadow: 0 4px 14px -3px rgba(var(--shadow), 0.35);
+    transition: transform var(--dur-fast) ease, filter var(--dur-fast) ease;
+  }
+  .btn-primary-dark:active { transform: scale(0.98); }
+  .btn-secondary-glass {
+    width: 100%;
+    height: 48px;
+    border-radius: 999px;
+    background: var(--sheet);
+    color: var(--ink);
+    font-size: 15px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7);
+    transition: transform var(--dur-fast) ease, background var(--dur-fast) ease;
+  }
+  .btn-secondary-glass:active { transform: scale(0.98); background: rgba(255,255,255,0.9); }
+
+  /* In-Focus Options & Silent Room Launchers */
+  .focus-options-card {
+    margin-top: 14px;
+    padding: 12px 14px;
+  }
+  .focus-options-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .focus-opt-btn {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 12px;
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.5);
+    border: 1px solid var(--hair);
+    text-align: left;
+    transition: transform var(--dur-fast) ease, background var(--dur-fast) ease;
+  }
+  .phone[data-theme="dark"] .focus-opt-btn { background: rgba(255, 255, 255, 0.05); }
+  .focus-opt-btn:active { transform: scale(0.98); background: rgba(255, 255, 255, 0.85); }
+  .focus-opt-btn i:first-child { font-size: 20px; flex-shrink: 0; }
+  .focus-opt-btn div { flex: 1; }
+  .focus-opt-btn b { display: block; font-size: 13.5px; font-weight: 600; color: var(--ink); }
+  .focus-opt-btn span { display: block; font-size: 11.5px; color: var(--ink-2); }
+  .focus-opt-btn i:last-child { color: var(--ink-3); font-size: 14px; }
+
+  /* ----------------- Screen 3: Overrun & Reallocation ----------------- */
+  .card-alert {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 14px 16px;
+    margin-bottom: 12px;
+    background: color-mix(in srgb, var(--sheet) 85%, var(--c-warn) 15%);
+    border: 1px solid color-mix(in srgb, var(--c-warn) 30%, transparent);
+  }
+  .alert-circle {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: var(--c-warn);
+    color: #ffffff;
+    display: grid;
+    place-items: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+  .alert-content .alert-head {
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    margin-bottom: 3px;
+  }
+  .alert-content .alert-text {
+    font-size: 13px;
+    line-height: 1.35;
+    color: var(--ink-2);
+  }
+
+  .card-reallocation {
+    padding: 16px 16px;
+    margin-bottom: 14px;
+  }
+  .realloc-label {
+    font-size: 14px;
+    color: var(--ink-2);
+    margin-bottom: 4px;
+  }
+  .realloc-metric {
+    font-size: 26px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+  }
+  .realloc-metric .from { color: var(--ink-2); }
+  .realloc-metric .arr { color: var(--ink-3); font-size: 20px; }
+  .realloc-metric .to { color: var(--c-warn); }
+  .realloc-sub { font-size: 13px; color: var(--ink-2); }
+  .realloc-sub strong { color: var(--ink); }
+
+  .decision-options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .decision-btn {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 16px;
+    border-radius: 20px;
+    text-align: left;
+    transition: transform var(--dur-fast) ease;
+  }
+  .decision-btn:active { transform: scale(0.98); }
+  .decision-btn.primary {
+    background: var(--c-calc);
+    color: #ffffff;
+    box-shadow: 0 8px 20px -4px rgba(115, 105, 150, 0.45);
+  }
+  .decision-btn.secondary {
+    background: var(--sheet);
+    color: var(--ink);
+  }
+  .decision-btn .d-icon { font-size: 20px; flex-shrink: 0; }
+  .decision-btn .d-text { flex: 1; }
+  .decision-btn .d-head { font-size: 15px; font-weight: 600; }
+  .decision-btn .d-sub { font-size: 12.5px; opacity: 0.85; margin-top: 2px; }
+
+  /* ----------------- Screen 4: Focus Room ----------------- */
+  .desk-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+  .desk-tile {
+    position: relative;
+    border-radius: 20px;
+    overflow: hidden;
+    height: 126px;
+    background: #20242c;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+  }
+  .desk-thumb {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    filter: brightness(0.92);
+  }
+  .desk-overlay {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    padding: 8px 10px 8px 10px;
+    background: linear-gradient(180deg, transparent 0%, rgba(10, 12, 16, 0.78) 100%);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: #ffffff;
+  }
+  .presence-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--c-presence);
+    box-shadow: 0 0 6px var(--c-presence);
+    flex-shrink: 0;
+  }
+  .presence-dot.purple {
+    background: #af9ad8;
+    box-shadow: 0 0 6px #af9ad8;
+  }
+  .desk-info {
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 1.15;
+  }
+  .desk-info span {
+    display: block;
+    font-size: 10.5px;
+    opacity: 0.75;
+    font-weight: 400;
+  }
+
+  .card-session {
+    padding: 16px 16px;
+    margin-bottom: 12px;
+  }
+  .session-timer-val {
+    font-size: 30px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    font-variant-numeric: tabular-nums;
+    color: var(--ink);
+    margin: 4px 0 10px 0;
+  }
+  .session-progress-bar {
+    width: 100%;
+    height: 5px;
+    border-radius: 999px;
+    background: rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+    margin-bottom: 12px;
+  }
+  .phone[data-theme="dark"] .session-progress-bar { background: rgba(255,255,255,0.1); }
+  .session-progress-fill {
+    width: 36%;
+    height: 100%;
+    border-radius: 999px;
+    background: var(--c-calc);
+    transition: width 1s linear;
+  }
+
+  /* ----------------- Screen 5: All Set / Peak-End Climax ----------------- */
+  .card-all-set {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 32px 18px 24px 18px;
+    margin-bottom: 14px;
+  }
+  .all-set-halo {
+    position: relative;
+    width: 96px;
+    height: 96px;
+    margin-bottom: 18px;
+    display: grid;
+    place-items: center;
+  }
+  .halo-ring {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background: rgba(102, 140, 113, 0.16);
+    animation: haloPulse 3s ease-in-out infinite;
+  }
+  .halo-ring.inner {
+    inset: 12px;
+    background: rgba(102, 140, 113, 0.28);
+  }
+  @keyframes haloPulse {
+    0%, 100% { transform: scale(1); opacity: 0.8; }
+    50% { transform: scale(1.1); opacity: 1; }
+  }
+  .halo-center {
+    position: relative;
+    z-index: 2;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: #628370;
+    color: #ffffff;
+    display: grid;
+    place-items: center;
+    font-size: 24px;
+    box-shadow: 0 6px 16px -2px rgba(98, 131, 112, 0.5);
+  }
+  .all-set-title {
+    font-size: 26px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    color: var(--c-forest);
+    margin-bottom: 16px;
+  }
+  .phone[data-theme="dark"] .all-set-title { color: #a3d2b2; }
+  .all-set-rows {
+    width: 100%;
+    text-align: left;
+    margin-top: 8px;
+  }
+  .all-set-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 6px;
+    border-top: 1px solid var(--hair);
+  }
+  .row-icon-pill {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    font-size: 15px;
+    flex-shrink: 0;
+    background: rgba(102, 140, 113, 0.15);
+    color: var(--c-free);
+  }
+  .row-icon-pill.cal {
+    background: rgba(0, 0, 0, 0.05);
+    color: var(--ink-2);
+  }
+  .phone[data-theme="dark"] .row-icon-pill.cal {
+    background: rgba(255, 255, 255, 0.1);
+  }
+
+  /* ----------------- Floating Bottom Navigation Capsule & Orb ----------------- */
+  .seg {
+    position: absolute;
+    left: 16px;
+    bottom: var(--bar-bot);
+    width: calc(100% - 32px - var(--bar-h) - 10px);
+    height: var(--bar-h);
+    padding: 4px;
+    border-radius: calc(var(--bar-h) / 2);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    z-index: 20;
+    user-select: none;
+    -webkit-user-select: none;
+    transition:
+      opacity var(--apple-soft-exit-dur) var(--apple-soft),
+      transform var(--apple-soft-exit-dur) var(--apple-soft);
+    transform-origin: 20% 50%;
+  }
+  .seg-ind {
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    bottom: 4px;
+    width: calc(50% - 4px);
+    border-radius: calc((var(--bar-h) - 8px) / 2);
+    z-index: 1;
+    background: var(--accent);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.55), inset 0 -1.5px 2px rgba(0,0,0,0.25), 0 6px 16px -4px rgba(var(--shadow), 0.5);
+    transition: transform var(--apple-morph-dur) var(--apple-morph);
+  }
+  .seg[data-tab="plan"] .seg-ind { transform: translateX(100%); }
+  .seg button {
+    position: relative;
+    z-index: 4;
+    height: 100%;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--ink-2);
+    transition: color var(--dur-base) ease, transform var(--dur-fast) var(--ease-out);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    border-radius: calc((var(--bar-h) - 8px) / 2);
+  }
+  .seg button i { font-size: 17px; transition: transform var(--dur-fast) var(--ease-out); }
+  .seg button.on { color: var(--accent-ink); }
+  .seg button:active i { transform: scale(0.9); }
+
+  /* Collapse left nav pill when search / text mode or voice mode activates */
+  .phone[data-state="text"] .seg,
+  .phone[data-state="voice"] .seg,
+  .phone[data-state="parsing"] .seg {
+    opacity: 0;
+    transform: scale(0.92) translateX(-14px);
+    pointer-events: none;
+    transition:
+      opacity var(--apple-soft-exit-dur) var(--apple-soft),
+      transform var(--apple-soft-exit-dur) var(--apple-soft);
+  }
+  .phone[data-state="rest"] .seg {
+    opacity: 1;
+    transform: none;
+    pointer-events: auto;
+    transition:
+      opacity 0.32s ease 0.05s,
+      transform var(--apple-soft-dur) var(--apple-soft) 0.02s;
+  }
+
+  /* ---------- The Command Orb ---------- */
+  .orb {
+    position: absolute;
+    z-index: 21;
+    right: 16px;
+    bottom: var(--bar-bot);
+    width: var(--bar-h);
+    height: var(--bar-h);
+    border-radius: calc(var(--bar-h) / 2);
+    overflow: hidden;
+    color: var(--ink);
+    touch-action: none;
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-touch-callout: none;
+    cursor: pointer;
+    transform: translate3d(0, 0, 0);
+    will-change: transform, width, height, border-radius;
+    transition:
+      transform var(--apple-soft-exit-dur) var(--apple-soft),
+      width var(--apple-soft-exit-dur) var(--apple-soft),
+      height var(--apple-soft-exit-dur) var(--apple-soft),
+      border-radius var(--apple-soft-exit-dur) var(--apple-soft),
+      background 0.4s ease;
+  }
+  .phone[data-state="rest"] .orb {
+    transform: translate3d(0, 0, 0);
+    width: var(--bar-h);
+    height: var(--bar-h);
+    border-radius: calc(var(--bar-h) / 2);
+    right: 16px;
+    cursor: pointer;
+    transition:
+      transform var(--apple-soft-exit-dur) var(--apple-soft),
+      width var(--apple-soft-exit-dur) var(--apple-soft),
+      height var(--apple-soft-exit-dur) var(--apple-soft),
+      border-radius var(--apple-soft-exit-dur) var(--apple-soft),
+      background 0.4s ease;
+  }
+  .phone[data-state="text"] .orb {
+    transform: translate3d(0, -278px, 0);
+    width: calc(100% - 32px);
+    height: 56px;
+    border-radius: 28px;
+    right: 16px;
+    cursor: default;
+    transition:
+      transform var(--apple-soft-dur) var(--apple-soft),
+      width var(--apple-soft-dur) var(--apple-soft),
+      height var(--apple-soft-dur) var(--apple-soft),
+      border-radius var(--apple-soft-dur) var(--apple-soft),
+      background 0.4s ease;
+  }
+  .phone[data-state="voice"] .orb {
+    transform: translate3d(0, 0, 0);
+    width: calc(100% - 32px);
+    height: 48px;
+    border-radius: 24px;
+    right: 16px;
+    cursor: default;
+    transition:
+      transform var(--apple-soft-dur) var(--apple-soft),
+      width var(--apple-soft-dur) var(--apple-soft),
+      height var(--apple-soft-dur) var(--apple-soft),
+      border-radius var(--apple-soft-dur) var(--apple-soft);
+  }
+  .phone[data-state="parsing"] .orb {
+    transform: translate3d(0, 0, 0);
+    width: calc(100% - 32px);
+    height: 50px;
+    border-radius: 25px;
+    right: 16px;
+    cursor: default;
+    transition:
+      transform var(--apple-soft-dur) var(--apple-soft),
+      width var(--apple-soft-dur) var(--apple-soft),
+      height var(--apple-soft-dur) var(--apple-soft),
+      border-radius var(--apple-soft-dur) var(--apple-soft);
+  }
+
+  /* Direct manipulation: zero transitions ONLY while dragging */
+  .phone.dragging .orb,
+  .phone.dragging .seg,
+  .phone.dragging .kbd,
+  .phone.dragging .scrim,
+  .phone.dragging .app {
+    transition: none !important;
+  }
+
+  /* Scrim backdrop */
+  .scrim {
+    position: absolute;
+    inset: 0;
+    z-index: 15;
+    background: var(--scrim);
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--apple-soft-exit-dur) var(--apple-soft);
+  }
+  .phone[data-state="text"] .scrim { opacity: 0.75; pointer-events: auto; transition: opacity var(--apple-soft-dur) var(--apple-soft); }
+  .phone[data-state="voice"] .scrim { opacity: 0.7; pointer-events: auto; transition: opacity var(--apple-soft-dur) var(--apple-soft); }
+  .phone[data-state="parsing"] .scrim { opacity: 0.85; pointer-events: auto; transition: opacity var(--apple-soft-dur) var(--apple-soft); }
+  .phone[data-state="rest"] .scrim { opacity: 0; pointer-events: none; }
+
+  /* Touch compression & charge */
+  .orb.pressing { filter: brightness(0.94); }
+  .phone.cancel-armed .orb { background: linear-gradient(180deg, color-mix(in srgb, var(--rec) 45%, transparent), color-mix(in srgb, var(--rec) 18%, transparent)); }
+  .phone[data-state="parsing"] .orb::after { animation: rimTurn 3.2s linear infinite; }
+  @keyframes rimTurn { to { --ang: 570deg; } }
+
+  .charge {
+    position: absolute; inset: 0; border-radius: inherit;
+    background: radial-gradient(circle, rgba(255,255,255,0.45), transparent 62%);
+    opacity: 0; transform: scale(0.4);
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    pointer-events: none; z-index: 3;
+  }
+  .orb.pressing .charge { opacity: 1; transform: scale(1.15); transition: opacity 0.25s linear, transform 0.25s linear; }
+
+  .sheen {
+    position: absolute; inset: 0; pointer-events: none; z-index: 3; opacity: 0; transition: opacity 0.4s ease;
+  }
+  .sheen::before {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(100deg, transparent 32%, rgba(255,255,255,0.32) 50%, transparent 68%);
+    transform: translateX(-100%);
+  }
+  .phone[data-state="parsing"] .sheen { opacity: 1; }
+  .phone[data-state="parsing"] .sheen::before { animation: sweep 1.8s var(--apple-kbd) infinite; }
+  @keyframes sweep { to { transform: translateX(100%); } }
+
+  /* Layers inside orb */
+  .layer {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    opacity: 0;
+    pointer-events: none;
+    z-index: 4;
+    transition: opacity 0.25s ease, transform var(--apple-soft-dur) var(--apple-soft);
+  }
+  .icon-layer { justify-content: center; }
+  .icon-layer i { font-size: 24px; }
+  .phone[data-state="rest"] .icon-layer {
+    opacity: 1; pointer-events: auto; transform: none;
+    transition: opacity 0.3s ease 0.05s, transform var(--apple-soft-dur) var(--apple-soft);
+  }
+  .phone:not([data-state="rest"]) .icon-layer {
+    opacity: 0; pointer-events: none; transform: scale(0.7) rotate(-16deg);
+    transition: opacity 0.2s ease, transform var(--apple-soft-exit-dur) var(--apple-soft);
+  }
+
+  .text-layer { padding: 0 8px 0 22px; gap: 10px; }
+  .text-layer input {
+    flex: 1; min-width: 0; background: transparent; border: 0; outline: 0;
+    color: var(--ink); font: 400 16px/1.2 "Geist", system-ui, sans-serif;
+    letter-spacing: -0.01em; caret-color: var(--ink);
+  }
+  .text-layer input::placeholder { color: var(--ink-3); }
+  .phone[data-state="text"] .text-layer {
+    opacity: 1; pointer-events: auto; transform: none;
+    transition: opacity 0.3s ease 0.08s, transform var(--apple-soft-dur) var(--apple-soft);
+  }
+  .phone:not([data-state="text"]) .text-layer {
+    opacity: 0; pointer-events: none; transform: translateX(10px);
+    transition: opacity 0.2s ease, transform var(--apple-soft-exit-dur) var(--apple-soft);
+  }
+
+  .send {
+    width: 42px; height: 42px; border-radius: 50%; flex-shrink: 0; display: grid; place-items: center;
+    background: var(--accent); color: var(--accent-ink); font-size: 18px;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.6), inset 0 -2px 3px rgba(0,0,0,0.25), 0 6px 14px -4px rgba(var(--shadow), 0.55);
+    transition: transform var(--apple-snappy-dur) var(--apple-snappy), opacity 0.3s ease;
+  }
+  .send:disabled { opacity: 0.35; transform: scale(0.88); cursor: default; }
+  .send:not(:disabled):active { transform: scale(0.9); transition-duration: 0.15s; }
+
+  .voice-layer { padding: 0 18px 0 16px; gap: 12px; }
+  .phone[data-state="voice"] .voice-layer {
+    opacity: 1; pointer-events: auto; transform: none;
+    transition: opacity 0.28s ease 0.08s, transform var(--apple-soft-dur) var(--apple-soft);
+  }
+  .phone:not([data-state="voice"]) .voice-layer {
+    opacity: 0; pointer-events: none; transform: scaleX(0.75);
+    transition: opacity 0.2s ease, transform var(--apple-soft-exit-dur) var(--apple-soft);
+  }
+  .rec-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--rec); flex-shrink: 0; animation: breathe 1.6s ease-in-out infinite; }
+  @keyframes breathe { 50% { opacity: 0.35; } }
+  .voice-layer canvas { flex: 1; height: 24px; min-width: 0; }
+  .rec-time { font-size: 13px; font-weight: 500; font-variant-numeric: tabular-nums; color: var(--ink-2); flex-shrink: 0; }
+
+  .parse-layer { justify-content: center; gap: 10px; padding: 0 22px; }
+  .phone[data-state="parsing"] .parse-layer {
+    opacity: 1; pointer-events: auto; transform: none;
+    transition: opacity 0.3s ease 0.1s, transform var(--apple-soft-dur) var(--apple-soft);
+  }
+  .phone:not([data-state="parsing"]) .parse-layer {
+    opacity: 0; pointer-events: none; transform: translateY(6px);
+    transition: opacity 0.2s ease, transform var(--apple-soft-exit-dur) var(--apple-soft);
+  }
+  .parse-layer i { font-size: 16px; flex-shrink: 0; color: var(--ink-2); }
+  .parse-text { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: 15px; font-weight: 400; letter-spacing: -0.01em; color: var(--ink); }
+
+  /* Hints */
+  .hint { position: absolute; z-index: 19; right: 16px; bottom: 94px; padding: 10px 16px; border-radius: 999px; font-size: 13px; font-weight: 500; white-space: nowrap; color: var(--ink);
+    transition: opacity 0.35s ease, transform var(--apple-soft-dur) var(--apple-soft); }
+  .phone.used .hint, .phone:not([data-state="rest"]) .hint { opacity: 0; transform: translateY(10px) scale(0.96); pointer-events: none; }
+  .voice-hint { position: absolute; z-index: 19; left: 0; right: 0; bottom: 90px; text-align: center; font-size: 13px; font-weight: 500; color: var(--ink-2);
+    opacity: 0; transform: translateY(12px); transition: opacity 0.32s ease, transform var(--apple-soft-dur) var(--apple-soft); pointer-events: none; }
+  .phone[data-state="voice"] .voice-hint { opacity: 1; transform: none; transition-delay: 0.15s; }
+  .phone.cancel-armed .voice-hint { color: var(--rec); }
+
+  /* Droplets for task deposits */
+  .droplet {
+    position: absolute; z-index: 40; width: 14px; height: 14px; margin: -7px 0 0 -7px;
+    border-radius: 50%; pointer-events: none;
+    background: radial-gradient(circle at 34% 28%, rgba(255,255,255,0.95) 0 14%, var(--c) 46%, #000 100%);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.35);
+  }
+
+  /* Mock keyboard */
+  .kbd {
+    position: absolute; left: 0; right: 0; bottom: 0; height: var(--kbd-h); z-index: 15; padding: 8px 3px 30px;
+    background: color-mix(in srgb, var(--sheet) 85%, transparent);
+    -webkit-backdrop-filter: blur(34px) saturate(130%); backdrop-filter: blur(34px) saturate(130%);
+    box-shadow: inset 0 1px 0 var(--hair); transform: translateY(102%);
+    transition: transform var(--apple-soft-exit-dur) var(--apple-kbd);
+    user-select: none; -webkit-user-select: none; touch-action: manipulation;
+  }
+  .phone[data-state="text"] .kbd {
+    transform: none;
+    transition: transform var(--apple-soft-dur) var(--apple-kbd);
+  }
+  .suggest { display: flex; gap: 6px; overflow-x: auto; padding: 2px 6px 10px; scrollbar-width: none; }
+  .suggest::-webkit-scrollbar { display: none; }
+  .suggest button {
+    flex-shrink: 0; padding: 8px 14px; border-radius: 999px; font-size: 13px; color: var(--ink);
+    background: var(--hair); box-shadow: inset 0 0 0 1px var(--hair);
+    transition: transform var(--dur-fast) ease, background 0.2s;
+  }
+  .suggest button:active { transform: scale(0.94); }
+  .kbd-keys { display: flex; flex-direction: column; gap: 7px; padding: 0 3px; }
+  .k-row { display: flex; justify-content: center; gap: 5px; }
+  .key {
+    height: 42px; border-radius: 7px; font-size: 20px; font-weight: 400; color: var(--ink);
+    background: var(--sheet-solid); box-shadow: 0 1px 0 rgba(0,0,0,0.22);
+    display: grid; place-items: center; min-width: 31px; flex: 1;
+    transition: transform var(--dur-fast) ease, background 0.15s;
+  }
+  .key:active { transform: scale(0.92); background: rgba(255,255,255,0.7); }
+  .key.wide { flex: 1.5; font-size: 16px; background: rgba(0,0,0,0.06); }
+  .phone[data-theme="dark"] .key.wide { background: rgba(255,255,255,0.12); }
+  .key.space { flex: 4.8; font-size: 14px; color: var(--ink-3); }
+
+  /* ----------------- Desktop Side Companion (Status & Control) ----------------- */
+  .side {
+    max-width: 320px;
+  }
+  .side h2 {
+    font-size: 24px;
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    margin: 0 0 6px 0;
+  }
+  .side p {
+    font-size: 14px;
+    line-height: 1.45;
+    color: var(--ink-2);
+    margin: 0 0 18px 0;
+  }
+  .side-screen-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    margin-bottom: 22px;
+  }
+  .side-nav-btn {
+    padding: 11px 14px;
+    border-radius: 14px;
+    font-size: 13.5px;
+    font-weight: 500;
+    text-align: left;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: transform var(--dur-fast) ease, background 0.2s ease;
+  }
+  .side-nav-btn:hover { transform: translateX(2px); }
+  .side-nav-btn.active {
+    background: var(--accent);
+    color: var(--accent-ink);
+    box-shadow: 0 6px 16px -4px rgba(var(--shadow), 0.4);
+  }
+  .side-nav-btn.active::before,
+  .side-nav-btn.active::after {
+    display: none;
+  }
+  .side-controls {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .side-pill {
+    padding: 8px 14px;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    transition: background 0.2s ease, transform var(--dur-fast) ease;
+  }
+  .side-pill:hover {
+    transform: translateY(-1px);
+  }
+  .side-pill.active {
+    background: var(--accent);
+    color: var(--accent-ink);
+  }
+
+  /* Prebaked GPU Motion Streak Classes */
+  .orb.motion-streak {
+    filter: url(#blur-vertical);
+  }
+  .timeline-arc-wrap.motion-streak {
+    filter: url(#blur-arc);
+  }
+
+  /* Motion Blur Intensity Slider */
+  .blur-slider-group {
+    margin-top: 12px;
+    padding: 12px 14px;
+    border-radius: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .blur-slider-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 12px;
+    font-weight: 500;
+  }
+  .blur-slider-title {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--ink);
+  }
+  .blur-slider-val {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--accent);
+    background: rgba(var(--shadow), 0.08);
+    padding: 2px 6px;
+    border-radius: 6px;
+  }
+  .blur-range {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 6px;
+    border-radius: 3px;
+    background: rgba(var(--shadow), 0.16);
+    outline: none;
+    cursor: pointer;
+  }
+  .blur-range::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 2px 6px rgba(var(--shadow), 0.35);
+    cursor: pointer;
+    transition: transform var(--dur-fast) ease;
+  }
+  .blur-range::-webkit-slider-thumb:hover {
+    transform: scale(1.15);
+  }
+  .blur-presets {
+    display: flex;
+    gap: 6px;
+  }
+  .blur-preset-btn {
+    flex: 1;
+    padding: 4px 6px;
+    font-size: 11px;
+    font-weight: 500;
+    border-radius: 8px;
+    border: 1px solid rgba(var(--shadow), 0.12);
+    background: rgba(255, 255, 255, 0.08);
+    color: var(--ink-secondary);
+    cursor: pointer;
+    transition: background 0.18s ease, color 0.18s ease, border-color 0.18s ease;
+  }
+  .blur-preset-btn:hover {
+    background: rgba(var(--shadow), 0.08);
+    color: var(--ink);
+  }
+  .blur-preset-btn.active {
+    background: var(--accent);
+    color: var(--accent-ink);
+    border-color: var(--accent);
+    box-shadow: 0 2px 8px -2px rgba(var(--shadow), 0.3);
+  }
+
+  /* Background & Wallpaper Configuration */
+  .bg-config-group {
+    margin-top: 12px;
+    padding: 12px 14px;
+    border-radius: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .bg-config-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 12px;
+    font-weight: 500;
+  }
+  .bg-config-title {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--ink);
+  }
+  .bg-config-val {
+    font-family: var(--font-mono, monospace);
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--accent);
+    background: rgba(var(--shadow), 0.08);
+    padding: 2px 7px;
+    border-radius: 6px;
+  }
+  .bg-presets {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 6px;
+  }
+  .bg-preset-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    padding: 6px 3px;
+    font-size: 9.5px;
+    font-weight: 500;
+    border-radius: 10px;
+    border: 1px solid rgba(var(--shadow), 0.12);
+    background: rgba(255, 255, 255, 0.06);
+    color: var(--ink-2);
+    cursor: pointer;
+    transition: background 0.18s ease, color 0.18s ease, border-color 0.18s ease, transform var(--dur-fast) ease;
+  }
+  .bg-preset-btn:hover {
+    background: rgba(var(--shadow), 0.1);
+    color: var(--ink);
+    transform: translateY(-1px);
+  }
+  .bg-preset-btn.active {
+    background: var(--accent);
+    color: var(--accent-ink);
+    border-color: var(--accent);
+    box-shadow: 0 2px 8px -2px rgba(var(--shadow), 0.35);
+  }
+  .swatch {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    box-shadow: inset 0 1px 2px rgba(0,0,0,0.3);
+  }
+  .swatch-black { background: #000000; }
+  .swatch-silk-dark {
+    background: url("assets/silk-dark.jpg") center/cover no-repeat, #15181f;
+  }
+  .swatch-charcoal { background: #12151b; }
+  .swatch-silk-light {
+    background: url("assets/silk-light.jpg") center/cover no-repeat, #d9dee8;
+  }
+  .swatch-totoro {
+    background: url("assets/totoro-sunflowers.png") center/cover no-repeat, #3a5040;
+  }
+  .bg-custom-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    padding-top: 6px;
+    border-top: 1px solid rgba(var(--shadow), 0.08);
+  }
+  .bg-custom-label {
+    font-size: 11px;
+    color: var(--ink-3);
+  }
+  .bg-color-input {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 26px;
+    height: 22px;
+    border: 0;
+    padding: 0;
+    border-radius: 6px;
+    background: transparent;
+    cursor: pointer;
+  }
+  .bg-color-input::-webkit-color-swatch-wrapper {
+    padding: 0;
+  }
+  .bg-color-input::-webkit-color-swatch {
+    border: 1px solid rgba(var(--shadow), 0.25);
+    border-radius: 6px;
+  }
+  .bg-preset-pill {
+    padding: 4px 10px;
+    font-size: 11px;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+</style>
+</head>
+<body>
+
+<div class="phone" id="phone" data-screen="triage" data-state="rest" data-tab="today">
+  <div class="wallpaper"></div>
+
+  <!-- High-Performance GPU Directional Motion Blur Filter Definitions -->
+  <svg class="motion-blur-defs" width="0" height="0" style="position: absolute; pointer-events: none; width: 0; height: 0; overflow: hidden;" aria-hidden="true">
+    <defs>
+      <!-- Vertical Anisotropic Motion Blur for AI Command Orb & Gestures -->
+      <filter id="blur-vertical" x="-30%" y="-50%" width="160%" height="200%">
+        <feGaussianBlur id="filter-orb-blur" in="SourceGraphic" stdDeviation="0 0" />
+      </filter>
+
+      <!-- Directional Arc Transition Blur for Screen & Dial Transitions -->
+      <filter id="blur-arc" x="-30%" y="-30%" width="160%" height="160%">
+        <feGaussianBlur id="filter-arc-blur" in="SourceGraphic" stdDeviation="0 0" />
+      </filter>
+
+      <!-- Comet Streak Filter for Flying Task Droplets -->
+      <filter id="blur-droplet" x="-60%" y="-60%" width="220%" height="220%">
+        <feGaussianBlur id="filter-droplet-blur" in="SourceGraphic" stdDeviation="1.5 6" />
+      </filter>
+    </defs>
+  </svg>
+
+  <!-- Hardware Statusbar (11:39 matching screenshots) -->
+  <div class="statusbar">
+    <span id="clock">11:39</span>
+    <span class="icons">
+      <i class="ph-fill ph-cell-signal-full"></i>
+      <i class="ph-fill ph-wifi-high"></i>
+      <i class="ph-fill ph-battery-full"></i>
+    </span>
+  </div>
+  <div class="island"></div>
+
+  <!-- Signature Left Curved Timeline Arc -->
+  <div class="timeline-arc-wrap" id="timeline-arc">
+    <svg class="arc-svg" viewBox="0 0 390 844" preserveAspectRatio="none">
+      <defs>
+        <linearGradient id="crescentGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stop-color="rgba(255, 255, 255, 0.78)" />
+          <stop offset="65%" stop-color="rgba(255, 255, 255, 0.58)" />
+          <stop offset="90%" stop-color="rgba(255, 255, 255, 0.28)" />
+          <stop offset="100%" stop-color="rgba(255, 255, 255, 0.0)" />
+        </linearGradient>
+        <linearGradient id="crescentGradDark" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stop-color="rgba(255, 255, 255, 0.16)" />
+          <stop offset="65%" stop-color="rgba(255, 255, 255, 0.10)" />
+          <stop offset="90%" stop-color="rgba(255, 255, 255, 0.04)" />
+          <stop offset="100%" stop-color="rgba(255, 255, 255, 0.0)" />
+        </linearGradient>
+      </defs>
+
+      <!-- Translucent Luminous Crescent Backdrop (curves along the exact arc) -->
+      <path class="crescent-bg" d="
+        M 0 70
+        C 18 85, 38 110, 50 140
+        C 91.4 231.4, 135 328.4, 123.6 420
+        C 126.1 499.5, 108.7 575.3, 81 652
+        C 83.4 679.5, 51.3 709.5, 41 738
+        C 30 762, 16 785, 0 805
+        Z
+      " />
+
+      <!-- Background subtle guide path (full curve) -->
+      <path class="arc-path arc-track-bg" d="M 50 140 C 91.4 231.4, 135 328.4, 123.6 420 C 126.1 499.5, 108.7 575.3, 81 652 C 83.4 679.5, 51.3 709.5, 41 738" />
+
+      <!-- Colored dynamic segments (Total path length ~627px) -->
+      <path class="arc-seg calc" id="arc-seg-calc" d="M 50 140 C 91.4 231.4, 135 328.4, 123.6 420 C 126.1 499.5, 108.7 575.3, 81 652 C 83.4 679.5, 51.3 709.5, 41 738" stroke-dasharray="293 630" stroke-dashoffset="0" />
+      <path class="arc-seg free" id="arc-seg-free" d="M 50 140 C 91.4 231.4, 135 328.4, 123.6 420 C 126.1 499.5, 108.7 575.3, 81 652 C 83.4 679.5, 51.3 709.5, 41 738" stroke-dasharray="237 630" stroke-dashoffset="-293" />
+      <path class="arc-seg practice" id="arc-seg-practice" d="M 50 140 C 91.4 231.4, 135 328.4, 123.6 420 C 126.1 499.5, 108.7 575.3, 81 652 C 83.4 679.5, 51.3 709.5, 41 738" stroke-dasharray="96 630" stroke-dashoffset="-530" />
+
+      <!-- White Radiating Spoke Lines -->
+      <line class="arc-spoke" id="spoke-4" x1="36" y1="394" x2="118" y2="419" />
+      <line class="arc-spoke" id="spoke-5" x1="34" y1="639" x2="75" y2="651" />
+
+      <!-- Perpendicular End-Cap Ticks -->
+      <line class="arc-tick-cap" x1="54.6" y1="137.9" x2="45.4" y2="142.1" stroke="#4d3b64" stroke-width="2.2" />
+      <line class="arc-tick-cap" x1="45.7" y1="739.7" x2="36.3" y2="736.3" stroke="#6a2a32" stroke-width="2.2" />
+
+      <!-- Nodes -->
+      <!-- Active node (current time at ~3:40, exact on curve) -->
+      <circle class="active-node-aura" id="node-active-aura" cx="84.0" cy="217.7" r="12" fill="rgba(180, 162, 203, 0.35)" />
+      <circle class="active-node-disc" id="node-active-disc" cx="84.0" cy="217.7" r="7.5" fill="#755e91" stroke="#ffffff" stroke-width="2.2" />
+
+      <!-- Transition Node 4:35 -->
+      <circle class="transition-node" id="node-435" cx="123.6" cy="420" r="5.5" fill="rgba(255, 255, 255, 0.95)" stroke="#ffffff" stroke-width="2" />
+
+      <!-- Transition Node 5:40 -->
+      <circle class="transition-node" id="node-540" cx="81.0" cy="652" r="5.5" fill="rgba(255, 255, 255, 0.95)" stroke="#ffffff" stroke-width="2" />
+    </svg>
+
+    <!-- Hour Digits (Clean Standalone Numerals with targeted classes) -->
+    <span class="arc-num arc-num-3" style="top: 140px; left: 22px;">3</span>
+    <span class="arc-num arc-num-4" style="top: 392px; left: 24px;">4</span>
+    <span class="arc-num arc-num-5" style="top: 637px; left: 22px;">5</span>
+    <span class="arc-num arc-num-6" style="top: 746px; left: 18px;">6</span>
+
+    <!-- Task Labels -->
+    <div class="arc-label calc" id="callout-calc" style="top: 265px; left: 20px;">
+      <span class="label-name">Calc<br/>review</span>
+      <span class="label-time" id="callout-calc-time">3:00 - 4:35</span>
+    </div>
+
+    <div class="arc-label free" id="callout-free" style="top: 504px; left: 20px;">
+      <span class="label-name">Free<br/>time</span>
+      <span class="label-time" id="callout-free-time">4:35 - 5:40</span>
+    </div>
+
+    <div class="arc-label practice" id="callout-practice" style="top: 696px; left: 82px;">
+      <span class="label-name">Practice</span>
+      <span class="label-time">5:40 - 6:00</span>
+    </div>
+  </div>
+
+  <!-- Main View Container -->
+  <main class="app" id="app">
+    <div class="views-wrapper">
+      
+      <!-- ================= SCREEN 1: TRIAGE ================= -->
+      <section class="screen-view active" id="view-triage">
+        <div class="eyebrow">Saturday, Oct 3</div>
+        <h1 class="screen-title">What should we<br>knock out next?</h1>
+        <p class="screen-subtitle">3 other things are already accounted for today.</p>
+
+        <!-- Card 1: Calc review -->
+        <div class="task-card glass" id="card-calc-review">
+          <div class="task-badge calc"><i class="ph-fill ph-check-square"></i></div>
+          <div class="task-info">
+            <div class="task-title">Calc review</div>
+            <div class="task-sub">Quiz tomorrow</div>
+            <div class="task-note">Usually 35-40 min</div>
+          </div>
+          <div class="task-arrow"><i class="ph-bold ph-caret-right"></i></div>
+        </div>
+
+        <!-- Card 2: APUSH packet -->
+        <div class="task-card glass" id="card-apush-packet">
+          <div class="task-badge apush"><i class="ph-fill ph-check-square"></i></div>
+          <div class="task-info">
+            <div class="task-title">APUSH packet</div>
+            <div class="task-sub">Due tomorrow</div>
+            <div class="task-note">Larger task · ~1-2 hrs</div>
+          </div>
+          <div class="task-arrow"><i class="ph-bold ph-caret-right"></i></div>
+        </div>
+
+        <!-- Card 3: Context Alert (Coming up) -->
+        <div class="card-coming-up glass">
+          <div class="eyebrow" style="margin: 0 0 4px 0;">Coming up</div>
+          <div class="coming-up-stat">
+            <strong>8 min</strong> until your full free hour starts shrinking.
+          </div>
+          <div class="card-divider"></div>
+          <div class="coming-up-sub">
+            <i class="ph-light ph-clock"></i>
+            <div>If you finish Calc by 4:35, you keep <span class="highlight-green">1h 05m</span> clear before practice.</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= SCREEN 2: ACTIVE FOCUS ================= -->
+      <section class="screen-view" id="view-focus">
+        <div class="eyebrow">Saturday, Oct 3</div>
+        <h1 class="screen-title">Calc review</h1>
+        <p class="screen-subtitle">Try for 30-35 min · Recent average: 38 min</p>
+
+        <!-- Circular Countdown Gauge -->
+        <div class="card-gauge glass">
+          <div class="gauge-svg-wrap">
+            <svg class="gauge-svg" viewBox="0 0 160 160">
+              <circle class="gauge-track" cx="80" cy="80" r="66" />
+              <circle class="gauge-fill" id="gauge-fill-arc" cx="80" cy="80" r="66" />
+            </svg>
+            <div class="gauge-content">
+              <div class="val" id="focus-countdown">19 min</div>
+              <div class="lbl">Left</div>
+              <div class="range">3:40 - 4:15</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Current Step breakdown -->
+        <div class="card-step glass">
+          <div class="step-header">
+            <div>
+              <div class="eyebrow" style="margin: 0 0 2px 0;">Current step</div>
+              <div class="step-title">Finish problems 1-8</div>
+            </div>
+            <div class="task-arrow"><i class="ph-bold ph-caret-right"></i></div>
+          </div>
+          <div class="step-desc">Focus on showing your work and checking answers.</div>
+        </div>
+
+        <!-- Pace notice -->
+        <div class="card-coming-up glass" style="padding: 12px 14px;">
+          <div class="coming-up-sub">
+            <i class="ph-light ph-clock"></i>
+            <div>If you stay on pace, you keep <span class="highlight-green">1h 05m</span> clear before practice.</div>
+          </div>
+        </div>
+
+        <!-- Primary Action buttons -->
+        <div class="btn-stack">
+          <button class="btn-primary-dark" id="btn-focus-continue">
+            <span>Continue</span><i class="ph-bold ph-caret-right"></i>
+          </button>
+          <button class="btn-secondary-glass glass" id="btn-focus-easier">
+            <span>Make this easier</span><i class="ph-bold ph-caret-right"></i>
+          </button>
+        </div>
+
+        <!-- In-Focus Options & Silent Room Launchers -->
+        <div class="focus-options-card glass">
+          <div class="eyebrow" style="margin: 0 0 8px 0;">Session options</div>
+          <div class="focus-options-grid">
+            <button class="focus-opt-btn" id="btn-goto-room">
+              <i class="ph-fill ph-users-three" style="color: var(--c-presence);"></i>
+              <div>
+                <b>Join Silent Focus Room</b>
+                <span>Study alongside Maya & 3 others</span>
+              </div>
+              <i class="ph-bold ph-caret-right"></i>
+            </button>
+
+            <button class="focus-opt-btn" id="btn-simulate-long">
+              <i class="ph-fill ph-timer" style="color: var(--c-warn);"></i>
+              <div>
+                <b>Simulate running long (+17 min)</b>
+                <span>Calculate schedule reallocation</span>
+              </div>
+              <i class="ph-bold ph-caret-right"></i>
+            </button>
+
+            <button class="focus-opt-btn" id="btn-complete-session">
+              <i class="ph-fill ph-check-circle" style="color: var(--c-free);"></i>
+              <div>
+                <b>Complete Calc review</b>
+                <span>Clear work & reach all-set climax</span>
+              </div>
+              <i class="ph-bold ph-caret-right"></i>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= SCREEN 3: OVERRUN ================= -->
+      <section class="screen-view" id="view-overrun">
+        <div class="eyebrow">Saturday, Oct 3</div>
+        <h1 class="screen-title">Calc is running long.</h1>
+        <p class="screen-subtitle">You've spent 52 min here, which is 17 min over your plan.</p>
+
+        <!-- Status card -->
+        <div class="task-card glass">
+          <div class="task-badge calc"><i class="ph-fill ph-check-square"></i></div>
+          <div class="task-info">
+            <div class="task-title">Calc review</div>
+            <div class="task-sub">You've spent 52 min here</div>
+            <div class="task-note">Planned 35-40 min</div>
+          </div>
+          <div class="task-arrow"><i class="ph-bold ph-caret-right"></i></div>
+        </div>
+
+        <!-- Alert card -->
+        <div class="card-alert glass">
+          <div class="alert-circle"><i class="ph-bold ph-warning"></i></div>
+          <div class="alert-content">
+            <div class="alert-head">APUSH is now tighter before practice.</div>
+            <div class="alert-text">Your extra time on Calc reduces the available window for APUSH.</div>
+          </div>
+        </div>
+
+        <!-- Time Reallocation Card -->
+        <div class="card-reallocation glass">
+          <div class="eyebrow" style="margin: 0 0 6px 0;">Time reallocation</div>
+          <div class="realloc-label">APUSH available window</div>
+          <div class="realloc-metric">
+            <span class="from">62 min</span>
+            <span class="arr">→</span>
+            <span class="to">38 min</span>
+          </div>
+          <div class="realloc-sub">Free time remaining: <strong>38 min</strong> (Was 62 min)</div>
+        </div>
+
+        <!-- Decision Options -->
+        <div class="eyebrow" style="margin: 16px 2px 8px 2px;">What do you want to do?</div>
+        <div class="decision-options">
+          <button class="decision-btn primary" id="btn-decision-switch">
+            <div class="d-icon"><i class="ph-fill ph-play"></i></div>
+            <div class="d-text">
+              <div class="d-head">Finish this problem and switch</div>
+              <div class="d-sub">Get a clean stopping point</div>
+            </div>
+            <i class="ph-bold ph-caret-right"></i>
+          </button>
+
+          <button class="decision-btn secondary glass" id="btn-decision-keep-going">
+            <div class="d-icon"><i class="ph-fill ph-fast-forward"></i></div>
+            <div class="d-text">
+              <div class="d-head">Keep going</div>
+              <div class="d-sub">Adjust the rest of your plan</div>
+            </div>
+            <i class="ph-bold ph-caret-right"></i>
+          </button>
+        </div>
+      </section>
+
+      <!-- ================= SCREEN 4: FOCUS ROOM ================= -->
+      <section class="screen-view" id="view-focus-room">
+        <div class="eyebrow">Focus Room</div>
+        <h1 class="screen-title">Presence, not pressure.</h1>
+        <p class="screen-subtitle">A quiet space to study alongside others. No calls, no chat, just shared focus.</p>
+
+        <!-- 2x2 Desk Grid with Photorealistic SVG Artwork -->
+        <div class="desk-grid">
+          <!-- Tile 1: Maya -->
+          <div class="desk-tile">
+            <svg class="desk-thumb" viewBox="0 0 200 140" preserveAspectRatio="xMidYMid slice">
+              <defs>
+                <linearGradient id="g-maya" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0%" stop-color="#d6cebd"/>
+                  <stop offset="50%" stop-color="#9d927c"/>
+                  <stop offset="100%" stop-color="#5a5245"/>
+                </linearGradient>
+              </defs>
+              <rect width="200" height="140" fill="url(#g-maya)"/>
+              <polygon points="60,0 180,0 200,90 80,90" fill="rgba(255,255,255,0.4)" filter="blur(6px)"/>
+              <rect x="25" y="45" width="60" height="42" rx="4" fill="#30353c"/>
+              <rect x="15" y="85" width="80" height="6" rx="2" fill="#585e68"/>
+              <circle cx="140" cy="75" r="14" fill="#e8e2d5"/>
+              <circle cx="140" cy="75" r="11" fill="#6d482f"/>
+              <circle cx="15" cy="20" r="18" fill="#4d6f4b" opacity="0.8"/>
+              <circle cx="28" cy="35" r="14" fill="#5c8359" opacity="0.85"/>
+            </svg>
+            <div class="desk-overlay">
+              <span class="presence-dot"></span>
+              <div class="desk-info">Maya <span>studying</span></div>
+            </div>
+          </div>
+
+          <!-- Tile 2: Ryan -->
+          <div class="desk-tile">
+            <svg class="desk-thumb" viewBox="0 0 200 140" preserveAspectRatio="xMidYMid slice">
+              <defs>
+                <linearGradient id="g-ryan" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0%" stop-color="#464254"/>
+                  <stop offset="100%" stop-color="#1f1c28"/>
+                </linearGradient>
+              </defs>
+              <rect width="200" height="140" fill="url(#g-ryan)"/>
+              <circle cx="160" cy="40" r="60" fill="rgba(255,200,120,0.35)" filter="blur(10px)"/>
+              <rect x="155" y="30" width="16" height="55" rx="3" fill="#343040"/>
+              <polygon points="30,60 130,50 140,110 40,120" fill="#ede8dc"/>
+              <line x1="85" y1="55" x2="90" y2="115" stroke="#ccc" stroke-width="2"/>
+            </svg>
+            <div class="desk-overlay">
+              <span class="presence-dot purple"></span>
+              <div class="desk-info">Ryan <span>writing</span></div>
+            </div>
+          </div>
+
+          <!-- Tile 3: Joel -->
+          <div class="desk-tile">
+            <svg class="desk-thumb" viewBox="0 0 200 140" preserveAspectRatio="xMidYMid slice">
+              <defs>
+                <linearGradient id="g-joel" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0%" stop-color="#a49887"/>
+                  <stop offset="100%" stop-color="#3d372e"/>
+                </linearGradient>
+              </defs>
+              <rect width="200" height="140" fill="url(#g-joel)"/>
+              <polygon points="20,10 110,0 120,80 30,90" fill="rgba(220,235,255,0.4)" filter="blur(5px)"/>
+              <rect x="25" y="35" width="70" height="46" rx="4" fill="#22252a"/>
+              <rect x="15" y="80" width="90" height="6" rx="2" fill="#4d535e"/>
+              <rect x="120" y="70" width="60" height="45" rx="3" fill="#f2efe6" transform="rotate(-6 120 70)"/>
+            </svg>
+            <div class="desk-overlay">
+              <span class="presence-dot"></span>
+              <div class="desk-info">Joel <span>Calc</span></div>
+            </div>
+          </div>
+
+          <!-- Tile 4: You -->
+          <div class="desk-tile">
+            <svg class="desk-thumb" viewBox="0 0 200 140" preserveAspectRatio="xMidYMid slice">
+              <defs>
+                <linearGradient id="g-you" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0%" stop-color="#ded4c3"/>
+                  <stop offset="100%" stop-color="#6e6455"/>
+                </linearGradient>
+              </defs>
+              <rect width="200" height="140" fill="url(#g-you)"/>
+              <rect x="70" y="10" width="110" height="70" rx="4" fill="rgba(255,255,255,0.45)" filter="blur(6px)"/>
+              <rect x="50" y="65" width="26" height="30" rx="4" fill="#fdfbf7"/>
+              <path d="M 76 72 Q 86 78 76 86" stroke="#fdfbf7" stroke-width="4" fill="none"/>
+              <rect x="90" y="80" width="85" height="45" rx="3" fill="#e8e2d4"/>
+            </svg>
+            <div class="desk-overlay">
+              <span class="presence-dot purple"></span>
+              <div class="desk-info">You <span>studying</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Session timer card -->
+        <div class="card-session glass">
+          <div class="eyebrow" style="margin: 0 0 2px 0;">Session</div>
+          <div class="session-timer-val"><span id="room-countdown">24:12</span> remaining</div>
+          <div class="session-progress-bar">
+            <div class="session-progress-fill" id="room-progress-fill"></div>
+          </div>
+          <div class="card-divider"></div>
+          <div class="task-info" style="display: flex; align-items: center; justify-content: space-between;">
+            <div>
+              <div class="eyebrow" style="margin: 0 0 2px 0;">Your task</div>
+              <div style="font-size: 15.5px; font-weight: 500;">Calc problems 1-8</div>
+            </div>
+            <div class="task-arrow"><i class="ph-bold ph-caret-right"></i></div>
+          </div>
+        </div>
+
+        <!-- Dual buttons -->
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 14px;">
+          <button class="btn-primary-dark" id="btn-join-silently">Join silently</button>
+          <button class="btn-secondary-glass glass" id="btn-leave-room">Leave room</button>
+        </div>
+      </section>
+
+      <!-- ================= SCREEN 5: ALL SET ================= -->
+      <section class="screen-view" id="view-all-set">
+        <div class="eyebrow">Saturday, Oct 3</div>
+        <h1 class="screen-title">All set for today.</h1>
+        <p class="screen-subtitle">You cleared your work before practice.</p>
+
+        <!-- Big Celebration Card -->
+        <div class="card-all-set glass">
+          <div class="all-set-halo">
+            <div class="halo-ring"></div>
+            <div class="halo-ring inner"></div>
+            <div class="halo-center"><i class="ph-bold ph-check"></i></div>
+          </div>
+
+          <div class="all-set-title">Clear until 6:30 PM</div>
+
+          <!-- Recap rows -->
+          <div class="all-set-rows">
+            <div class="all-set-row" id="row-tasks-recap" style="cursor: pointer;">
+              <div class="row-icon-pill"><i class="ph-bold ph-check"></i></div>
+              <div class="task-info">
+                <div style="font-size: 14.5px; font-weight: 500;">3 tasks completed</div>
+              </div>
+              <i class="ph-bold ph-caret-right" style="color: var(--ink-3);"></i>
+            </div>
+
+            <div class="all-set-row" id="row-tomorrow-recap" style="cursor: pointer;">
+              <div class="row-icon-pill cal"><i class="ph-light ph-calendar"></i></div>
+              <div class="task-info">
+                <div style="font-size: 14.5px; font-weight: 500;">Tomorrow already has 2 things accounted for.</div>
+              </div>
+              <i class="ph-bold ph-caret-right" style="color: var(--ink-3);"></i>
+            </div>
+          </div>
+        </div>
+
+        <!-- Replay control -->
+        <button class="btn-secondary-glass glass" id="btn-replay-flow" style="width: 100%; margin-top: 10px;">
+          <i class="ph-light ph-arrow-counter-clockwise"></i>
+          <span>Replay day flow</span>
+        </button>
+      </section>
+
+      <!-- ================= SCREEN: PLAN (Tab View) ================= -->
+      <section class="screen-view" id="view-plan">
+        <div class="eyebrow">Agenda Plan</div>
+        <h1 class="screen-title">Your schedule</h1>
+        <p class="screen-subtitle">Overview of today's commitments and tomorrow's horizon.</p>
+
+        <div class="task-card glass">
+          <div class="task-badge calc"><i class="ph-bold ph-clock"></i></div>
+          <div class="task-info">
+            <div class="task-title">3:00 - 4:35 · Calc Review</div>
+            <div class="task-sub">Active study block</div>
+          </div>
+        </div>
+
+        <div class="task-card glass">
+          <div class="task-badge done"><i class="ph-bold ph-sun"></i></div>
+          <div class="task-info">
+            <div class="task-title">4:35 - 5:40 · Free Time</div>
+            <div class="task-sub">Unscheduled buffer</div>
+          </div>
+        </div>
+
+        <div class="task-card glass">
+          <div class="task-badge apush"><i class="ph-bold ph-barbell"></i></div>
+          <div class="task-info">
+            <div class="task-title">5:40 - 6:00 · Practice</div>
+            <div class="task-sub">Scheduled team practice</div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- Scrim overlay -->
+  <div class="scrim" id="scrim"></div>
+
+  <!-- Micro-interaction Hints -->
+  <div class="hint glass">Tap or swipe up to type, hold to speak</div>
+  <div class="voice-hint" id="voice-hint">Release to send, slide up to cancel</div>
+
+  <!-- Left Segmented Capsule: Today / Plan (Direct Child of .phone) -->
+  <div class="seg glass" id="seg" data-tab="today" role="tablist">
+    <div class="seg-ind"></div>
+    <button class="on" data-tab="today" id="tab-today" role="tab" aria-selected="true">
+      <i class="ph-fill ph-calendar-blank"></i><span>Today</span>
+    </button>
+    <button data-tab="plan" id="tab-plan" role="tab" aria-selected="false">
+      <i class="ph-light ph-list-dashes"></i><span>Plan</span>
+    </button>
+  </div>
+
+  <!-- The Command Orb (Direct Child of .phone) -->
+  <div class="orb glass" id="orb" role="button" aria-label="Command Orb" tabindex="0">
+    <div class="charge"></div>
+    <div class="sheen"></div>
+
+    <!-- Icon layer with pencil -->
+    <div class="layer icon-layer">
+      <i class="ph-light ph-pencil-simple"></i>
+    </div>
+
+    <!-- Natural language text input layer -->
+    <div class="layer text-layer">
+      <input id="input" type="text" autocomplete="off" spellcheck="false" placeholder="Try “Gym tomorrow at 7am”" />
+      <button class="send" id="send" disabled><i class="ph-bold ph-arrow-up"></i></button>
+    </div>
+
+    <!-- Voice recording waveform layer -->
+    <div class="layer voice-layer">
+      <span class="rec-dot"></span>
+      <canvas id="wave"></canvas>
+      <span class="rec-time" id="rec-time">0:00</span>
+    </div>
+
+    <!-- Parsing shimmer layer -->
+    <div class="layer parse-layer">
+      <i class="ph-light ph-sparkle"></i>
+      <span class="parse-text" id="parse-text">Parsing intent...</span>
+    </div>
+  </div>
+
+  <!-- Interactive Mock Keyboard -->
+  <div class="kbd" id="kbd">
+    <div class="suggest">
+      <button data-text="Calc review 30m">Calc review 30m</button>
+      <button data-text="APUSH packet tomorrow">APUSH packet tomorrow</button>
+      <button data-text="Free time until 6">Free time until 6</button>
+      <button data-text="Practice at 5:40pm">Practice at 5:40pm</button>
+    </div>
+    <div class="kbd-keys">
+      <div class="k-row">
+        <button class="key">q</button><button class="key">w</button><button class="key">e</button><button class="key">r</button><button class="key">t</button><button class="key">y</button><button class="key">u</button><button class="key">i</button><button class="key">o</button><button class="key">p</button>
+      </div>
+      <div class="k-row">
+        <button class="key">a</button><button class="key">s</button><button class="key">d</button><button class="key">f</button><button class="key">g</button><button class="key">h</button><button class="key">j</button><button class="key">k</button><button class="key">l</button>
+      </div>
+      <div class="k-row">
+        <button class="key wide"><i class="ph-bold ph-arrow-up"></i></button>
+        <button class="key">z</button><button class="key">x</button><button class="key">c</button><button class="key">v</button><button class="key">b</button><button class="key">n</button><button class="key">m</button>
+        <button class="key wide" id="k-back"><i class="ph-bold ph-backspace"></i></button>
+      </div>
+      <div class="k-row">
+        <button class="key wide">123</button>
+        <button class="key space" id="k-space">space</button>
+        <button class="key wide" id="k-done">return</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="home-ind"></div>
+</div>
+
+<!-- Desktop Side Companion (Status & Control) -->
+<aside class="side">
+  <h2>Adaptive Timeline</h2>
+  <p>Control the active interface status and experience all 5 psychological retention states seamlessly.</p>
+  
+  <div class="side-screen-nav">
+    <button class="side-nav-btn glass active" data-target="triage">
+      <span>1. Triage Horizon</span><i class="ph-bold ph-caret-right"></i>
+    </button>
+    <button class="side-nav-btn glass" data-target="focus">
+      <span>2. Active Focus Session</span><i class="ph-bold ph-caret-right"></i>
+    </button>
+    <button class="side-nav-btn glass" data-target="overrun">
+      <span>3. Adaptive Reallocation</span><i class="ph-bold ph-caret-right"></i>
+    </button>
+    <button class="side-nav-btn glass" data-target="focus-room">
+      <span>4. Silent Focus Room</span><i class="ph-bold ph-caret-right"></i>
+    </button>
+    <button class="side-nav-btn glass" data-target="all-set">
+      <span>5. Peak-End Climax</span><i class="ph-bold ph-caret-right"></i>
+    </button>
+    <button class="side-nav-btn glass" data-target="plan">
+      <span>6. Plan Overview</span><i class="ph-bold ph-caret-right"></i>
+    </button>
+  </div>
+
+  <div class="side-controls">
+    <button class="side-pill glass" id="theme-toggle">
+      <i class="ph-light ph-moon"></i><span>Dark</span>
+    </button>
+    <button class="side-pill glass" id="sim-overage-btn">
+      <i class="ph-light ph-fast-forward"></i><span>Simulate Pace</span>
+    </button>
+    <button class="side-pill glass active" id="blur-toggle">
+      <i class="ph-light ph-wave-sine"></i><span>Motion Blur: 50%</span>
+    </button>
+  </div>
+
+  <div class="blur-slider-group glass">
+    <div class="blur-slider-header">
+      <span class="blur-slider-title"><i class="ph-light ph-wave-sine"></i> Motion Blur Intensity</span>
+      <span class="blur-slider-val" id="blur-val">50%</span>
+    </div>
+    <input type="range" class="blur-range" id="blur-slider" min="0" max="100" value="50" step="5" />
+    <div class="blur-presets">
+      <button class="blur-preset-btn" data-val="0">Off</button>
+      <button class="blur-preset-btn" data-val="25">Subtle</button>
+      <button class="blur-preset-btn active" data-val="50">Balanced</button>
+      <button class="blur-preset-btn" data-val="100">Cinematic</button>
+    </div>
+  </div>
+
+  <!-- Background & Wallpaper Configuration Group -->
+  <div class="bg-config-group glass">
+    <div class="bg-config-header">
+      <span class="bg-config-title"><i class="ph-light ph-image"></i> Wallpaper</span>
+      <span class="bg-config-val" id="bg-val">Pure Black</span>
+    </div>
+    
+    <div class="bg-presets">
+      <button class="bg-preset-btn active" data-bg="black" title="OLED Pure Black">
+        <span class="swatch swatch-black"></span>
+        <span>Black</span>
+      </button>
+      <button class="bg-preset-btn" data-bg="silk-dark" title="Apple Silk Dark">
+        <span class="swatch swatch-silk-dark"></span>
+        <span>Silk Dark</span>
+      </button>
+      <button class="bg-preset-btn" data-bg="charcoal" title="Deep Charcoal">
+        <span class="swatch swatch-charcoal"></span>
+        <span>Charcoal</span>
+      </button>
+      <button class="bg-preset-btn" data-bg="silk-light" title="Apple Silk Light">
+        <span class="swatch swatch-silk-light"></span>
+        <span>Silk Light</span>
+      </button>
+      <button class="bg-preset-btn" data-bg="totoro" title="Totoro Sunflowers">
+        <span class="swatch swatch-totoro"></span>
+        <span>Totoro</span>
+      </button>
+    </div>
+
+    <div class="bg-custom-row">
+      <label class="bg-custom-label" for="bg-color-picker">Custom Tint</label>
+      <input type="color" id="bg-color-picker" value="#000000" class="bg-color-input" />
+      <button class="bg-preset-pill glass" id="bg-reset-black">Reset Black</button>
+    </div>
+  </div>
+</aside>
+
+<script>
+(() => {
+  const $ = (s) => document.querySelector(s);
+  const $$ = (s) => document.querySelectorAll(s);
+  const root = document.documentElement;
+  const phone = $('#phone');
+  const orb = $('#orb');
+  const seg = $('#seg');
+  const input = $('#input');
+  const sendBtn = $('#send');
+  const scrim = $('#scrim');
+  const kbd = $('#kbd');
+  const voiceHint = $('#voice-hint');
+  const iconLayer = $('.icon-layer');
+  const textLayer = $('.text-layer');
+  const parseText = $('#parse-text');
+
+  /* ---------------- Web Audio Feedback ---------------- */
+  let audioCtx = null;
+  function playSound(type) {
+    try {
+      if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      if (audioCtx.state === 'suspended') audioCtx.resume();
+      const now = audioCtx.currentTime;
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+
+      if (type === 'tap') {
+        osc.frequency.setValueAtTime(340, now);
+        osc.frequency.exponentialRampToValueAtTime(140, now + 0.04);
+        gain.gain.setValueAtTime(0.12, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.04);
+        osc.start(now);
+        osc.stop(now + 0.04);
+      } else if (type === 'check') {
+        osc.frequency.setValueAtTime(480, now);
+        osc.frequency.exponentialRampToValueAtTime(840, now + 0.07);
+        gain.gain.setValueAtTime(0.14, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.08);
+        osc.start(now);
+        osc.stop(now + 0.08);
+      } else if (type === 'allset') {
+        [523.25, 659.25, 783.99, 1046.50].forEach((freq, i) => {
+          const o = audioCtx.createOscillator();
+          const g = audioCtx.createGain();
+          o.connect(g);
+          g.connect(audioCtx.destination);
+          o.type = 'sine';
+          o.frequency.setValueAtTime(freq, now + i * 0.06);
+          g.gain.setValueAtTime(0.08, now + i * 0.06);
+          g.gain.exponentialRampToValueAtTime(0.0001, now + i * 0.06 + 0.55);
+          o.start(now + i * 0.06);
+          o.stop(now + i * 0.06 + 0.55);
+        });
+      }
+    } catch (e) {}
+  }
+
+  /* ---------------- State Management ---------------- */
+  let currentScreen = 'triage';
+  let orbState = 'rest';
+  let currentTab = 'today';
+
+  /* Prebaked Motion Blur System */
+  const filterOrbBlur = $('#filter-orb-blur');
+  const filterArcBlur = $('#filter-arc-blur');
+  const filterDropletBlur = $('#filter-droplet-blur');
+  const blurToggleBtn = $('#blur-toggle');
+  const blurSlider = $('#blur-slider');
+  const blurVal = $('#blur-val');
+  const blurPresetBtns = $$('.blur-preset-btn');
+
+  let blurIntensity = 50; // percentage 0 - 100
+  let prevBlurIntensity = 50;
+
+  function setBlurIntensity(val, updateInput = true) {
+    blurIntensity = Math.max(0, Math.min(100, Math.round(val)));
+    if (blurIntensity > 0) prevBlurIntensity = blurIntensity;
+
+    if (blurVal) {
+      blurVal.textContent = `${blurIntensity}%`;
+      blurVal.style.color = blurIntensity === 0 ? 'var(--ink-secondary)' : 'var(--accent)';
+    }
+
+    if (updateInput && blurSlider) {
+      blurSlider.value = blurIntensity;
+    }
+
+    blurPresetBtns.forEach(btn => {
+      btn.classList.toggle('active', parseInt(btn.dataset.val, 10) === blurIntensity);
+    });
+
+    if (blurToggleBtn) {
+      blurToggleBtn.querySelector('span').textContent = blurIntensity > 0 ? `Motion Blur: ${blurIntensity}%` : 'Motion Blur: OFF';
+      blurToggleBtn.classList.toggle('active', blurIntensity > 0);
+    }
+
+    // Prebake SVG Filter attributes once (GPU compiles shader once and caches)
+    if (filterOrbBlur) {
+      const y = (blurIntensity * 0.08).toFixed(1);
+      filterOrbBlur.setAttribute('stdDeviation', `0 ${y}`);
+    }
+    if (filterArcBlur) {
+      const x = (blurIntensity * 0.02).toFixed(1);
+      const y = (blurIntensity * 0.035).toFixed(1);
+      filterArcBlur.setAttribute('stdDeviation', `${x} ${y}`);
+    }
+    if (filterDropletBlur) {
+      const x = Math.max(0.5, blurIntensity * 0.025).toFixed(1);
+      const y = (blurIntensity * 0.09).toFixed(1);
+      filterDropletBlur.setAttribute('stdDeviation', `${x} ${y}`);
+    }
+
+    if (blurIntensity === 0) {
+      if (orbEnvelopeRaf) { cancelAnimationFrame(orbEnvelopeRaf); orbEnvelopeRaf = null; }
+      if (arcEnvelopeRaf) { cancelAnimationFrame(arcEnvelopeRaf); arcEnvelopeRaf = null; }
+      if (filterOrbBlur) filterOrbBlur.setAttribute('stdDeviation', '0 0');
+      if (filterArcBlur) filterArcBlur.setAttribute('stdDeviation', '0 0');
+      orb.classList.remove('motion-streak');
+      const arcWrap = $('#timeline-arc');
+      if (arcWrap) arcWrap.classList.remove('motion-streak');
+    }
+  }
+
+  let arcEnvelopeRaf = null;
+  function triggerArcMotionBlur() {
+    if (blurIntensity <= 0) return;
+    const arcWrap = $('#timeline-arc');
+    if (!arcWrap || !filterArcBlur) return;
+    if (arcEnvelopeRaf) cancelAnimationFrame(arcEnvelopeRaf);
+
+    const maxArcX = blurIntensity * 0.02;
+    const maxArcY = blurIntensity * 0.035;
+    const duration = 360; // Fades completely to zero at 360ms, while transition runs to 500ms
+    const startTime = performance.now();
+    arcWrap.classList.add('motion-streak');
+
+    function step(now) {
+      const elapsed = now - startTime;
+      const progress = Math.min(1, elapsed / duration);
+      // Smooth half-sine velocity envelope: 0 -> peak -> 0
+      const envelope = Math.sin(progress * Math.PI);
+      const bx = (maxArcX * envelope).toFixed(2);
+      const by = (maxArcY * envelope).toFixed(2);
+
+      filterArcBlur.setAttribute('stdDeviation', `${bx} ${by}`);
+
+      if (progress < 1) {
+        arcEnvelopeRaf = requestAnimationFrame(step);
+      } else {
+        filterArcBlur.setAttribute('stdDeviation', '0 0');
+        arcWrap.classList.remove('motion-streak');
+        arcEnvelopeRaf = null;
+      }
+    }
+    arcEnvelopeRaf = requestAnimationFrame(step);
+  }
+
+  let orbEnvelopeRaf = null;
+  function triggerOrbMotionStreak() {
+    if (blurIntensity <= 0) return;
+    if (orbEnvelopeRaf) cancelAnimationFrame(orbEnvelopeRaf);
+
+    const maxBlur = blurIntensity * 0.08;
+    const duration = 320; // Fades completely to zero at 320ms, while transition runs to 420ms
+    const startTime = performance.now();
+    orb.classList.add('motion-streak');
+
+    function step(now) {
+      const elapsed = now - startTime;
+      const progress = Math.min(1, elapsed / duration);
+      // Smooth half-sine velocity envelope: 0 -> peak -> 0
+      const envelope = Math.sin(progress * Math.PI);
+      const blurVal = (maxBlur * envelope).toFixed(2);
+
+      if (filterOrbBlur) {
+        filterOrbBlur.setAttribute('stdDeviation', `0 ${blurVal}`);
+      }
+
+      if (progress < 1) {
+        orbEnvelopeRaf = requestAnimationFrame(step);
+      } else {
+        if (filterOrbBlur) filterOrbBlur.setAttribute('stdDeviation', '0 0');
+        orb.classList.remove('motion-streak');
+        orbEnvelopeRaf = null;
+      }
+    }
+    orbEnvelopeRaf = requestAnimationFrame(step);
+  }
+
+  const arcCalc = $('#arc-seg-calc');
+  const arcFree = $('#arc-seg-free');
+  const arcPractice = $('#arc-seg-practice');
+  const calloutCalc = $('#callout-calc');
+  const calloutFree = $('#callout-free');
+  const calloutCalcTime = $('#callout-calc-time');
+  const calloutFreeTime = $('#callout-free-time');
+  const nodeActiveAura = $('#node-active-aura');
+  const nodeActiveDisc = $('#node-active-disc');
+  const spoke4 = $('#spoke-4');
+  const spoke5 = $('#spoke-5');
+
+  function setScreen(screenName) {
+    currentScreen = screenName;
+    phone.dataset.screen = screenName;
+
+    // Coordinate tab state with screen
+    if (screenName === 'plan') {
+      currentTab = 'plan';
+      phone.dataset.tab = 'plan';
+      seg.dataset.tab = 'plan';
+      $('#tab-today').classList.remove('on');
+      $('#tab-today').setAttribute('aria-selected', 'false');
+      $('#tab-plan').classList.add('on');
+      $('#tab-plan').setAttribute('aria-selected', 'true');
+    } else {
+      currentTab = 'today';
+      phone.dataset.tab = 'today';
+      seg.dataset.tab = 'today';
+      $('#tab-today').classList.add('on');
+      $('#tab-today').setAttribute('aria-selected', 'true');
+      $('#tab-plan').classList.remove('on');
+      $('#tab-plan').setAttribute('aria-selected', 'false');
+    }
+
+    $$('.screen-view').forEach(v => v.classList.remove('active'));
+    const targetView = $(`#view-${screenName}`);
+    if (targetView) targetView.classList.add('active');
+
+    $$('.side-nav-btn').forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.target === screenName);
+    });
+
+    updateTimelineArc(screenName);
+    triggerArcMotionBlur();
+
+    if (screenName === 'all-set') {
+      playSound('allset');
+    } else {
+      playSound('tap');
+    }
+
+    $('#app').scrollTop = 0;
+  }
+
+  function updateTimelineArc(screen) {
+    if (screen === 'triage' || screen === 'focus') {
+      arcCalc.setAttribute('stroke-dasharray', '293 630');
+      arcCalc.setAttribute('stroke-dashoffset', '0');
+      arcFree.setAttribute('stroke-dasharray', '237 630');
+      arcFree.setAttribute('stroke-dashoffset', '-293');
+      arcPractice.setAttribute('stroke-dasharray', '96 630');
+      arcPractice.setAttribute('stroke-dashoffset', '-530');
+
+      calloutCalc.style.top = '265px';
+      calloutCalc.style.left = '20px';
+      calloutCalc.querySelector('.label-name').innerHTML = 'Calc<br/>review';
+      calloutCalcTime.textContent = '3:00 - 4:35';
+
+      calloutFree.style.top = '504px';
+      calloutFree.style.left = '20px';
+      calloutFree.querySelector('.label-name').innerHTML = 'Free<br/>time';
+      calloutFreeTime.textContent = '4:35 - 5:40';
+
+      nodeActiveAura.style.display = '';
+      nodeActiveDisc.style.display = '';
+      nodeActiveAura.setAttribute('cx', '84.0');
+      nodeActiveAura.setAttribute('cy', '217.7');
+      nodeActiveDisc.setAttribute('cx', '84.0');
+      nodeActiveDisc.setAttribute('cy', '217.7');
+
+      spoke4.style.opacity = '1';
+      spoke5.style.opacity = '1';
+    } else if (screen === 'overrun') {
+      arcCalc.setAttribute('stroke-dasharray', '395 630');
+      arcCalc.setAttribute('stroke-dashoffset', '0');
+      arcFree.setAttribute('stroke-dasharray', '135 630');
+      arcFree.setAttribute('stroke-dashoffset', '-395');
+      arcPractice.setAttribute('stroke-dasharray', '96 630');
+      arcPractice.setAttribute('stroke-dashoffset', '-530');
+
+      calloutCalc.style.top = '295px';
+      calloutCalc.querySelector('.label-name').innerHTML = "You've spent<br/>52 min";
+      calloutCalcTime.textContent = 'Planned 35-40 min';
+
+      calloutFree.style.top = '560px';
+      calloutFreeTime.textContent = 'Remaining 38 min';
+
+      nodeActiveAura.style.display = '';
+      nodeActiveDisc.style.display = '';
+      nodeActiveAura.setAttribute('cx', '122.0');
+      nodeActiveAura.setAttribute('cy', '510.0');
+      nodeActiveDisc.setAttribute('cx', '122.0');
+      nodeActiveDisc.setAttribute('cy', '510.0');
+    } else if (screen === 'all-set') {
+      arcCalc.setAttribute('stroke-dasharray', '90 630');
+      arcCalc.setAttribute('stroke-dashoffset', '0');
+      arcFree.setAttribute('stroke-dasharray', '537 630');
+      arcFree.setAttribute('stroke-dashoffset', '-90');
+      arcPractice.setAttribute('stroke-dasharray', '0 630');
+
+      calloutCalc.style.top = '190px';
+      calloutCalc.querySelector('.label-name').innerHTML = 'Completed<br/>3 tasks';
+      calloutCalcTime.textContent = 'All cleared';
+
+      calloutFree.style.top = '440px';
+      calloutFreeTime.textContent = '4:35 - 6:30';
+
+      nodeActiveAura.style.display = 'none';
+      nodeActiveDisc.style.display = 'none';
+      spoke4.style.opacity = '0.4';
+      spoke5.style.opacity = '0.4';
+    } else if (screen === 'plan') {
+      // In plan view, preserve top horizon values
+      calloutCalc.style.top = '265px';
+      calloutCalc.style.left = '20px';
+      calloutCalc.querySelector('.label-name').innerHTML = 'Calc<br/>review';
+      calloutCalcTime.textContent = '3:00 - 4:35';
+    }
+  }
+
+  $$('.side-nav-btn').forEach(b => {
+    b.addEventListener('click', () => setScreen(b.dataset.target));
+  });
+
+  $('#card-calc-review').addEventListener('click', () => setScreen('focus'));
+  $('#card-apush-packet').addEventListener('click', () => setScreen('focus'));
+
+  $('#btn-focus-continue').addEventListener('click', () => {
+    setScreen('overrun');
+  });
+
+  $('#btn-focus-easier').addEventListener('click', () => {
+    playSound('check');
+    alert("Micro-breakdown activated: Split problems 1-8 into two 10-minute sprints.");
+  });
+
+  $('#btn-goto-room').addEventListener('click', () => {
+    setScreen('focus-room');
+  });
+
+  $('#btn-simulate-long').addEventListener('click', () => {
+    setScreen('overrun');
+  });
+
+  $('#btn-complete-session').addEventListener('click', () => {
+    setScreen('all-set');
+  });
+
+  $('#btn-decision-switch').addEventListener('click', () => {
+    setScreen('all-set');
+  });
+
+  $('#btn-decision-keep-going').addEventListener('click', () => {
+    setScreen('focus');
+  });
+
+  $('#btn-join-silently').addEventListener('click', () => {
+    const btn = $('#btn-join-silently');
+    playSound('check');
+    if (btn.textContent === 'Join silently') {
+      btn.textContent = 'In session';
+      btn.style.background = 'var(--c-free)';
+    } else {
+      btn.textContent = 'Join silently';
+      btn.style.background = 'var(--accent)';
+    }
+  });
+
+  $('#btn-leave-room').addEventListener('click', () => {
+    setScreen('focus');
+  });
+
+  $('#btn-replay-flow').addEventListener('click', () => {
+    setScreen('triage');
+  });
+
+  $('#sim-overage-btn').addEventListener('click', () => {
+    if (currentScreen === 'focus') setScreen('overrun');
+    else if (currentScreen === 'overrun') setScreen('all-set');
+    else setScreen('focus');
+  });
+
+  window.addEventListener('keydown', (e) => {
+    if (document.activeElement.tagName === 'INPUT') return;
+    if (e.key === '1') setScreen('triage');
+    if (e.key === '2') setScreen('focus');
+    if (e.key === '3') setScreen('overrun');
+    if (e.key === '4') setScreen('focus-room');
+    if (e.key === '5') setScreen('all-set');
+    if (e.key === '6' || e.key === 'p' || e.key === 'P') setScreen('plan');
+    if (e.key === 'b' || e.key === 'B') toggleMotionBlur();
+  });
+
+  /* ---------------- Motion Blur Toggle & Slider Listeners ---------------- */
+  function toggleMotionBlur() {
+    if (blurIntensity > 0) {
+      setBlurIntensity(0, true);
+    } else {
+      setBlurIntensity(prevBlurIntensity || 50, true);
+    }
+    playSound('tap');
+  }
+
+  if (blurToggleBtn) {
+    blurToggleBtn.addEventListener('click', toggleMotionBlur);
+  }
+
+  if (blurSlider) {
+    blurSlider.addEventListener('input', (e) => {
+      setBlurIntensity(parseFloat(e.target.value), false);
+    });
+  }
+
+  blurPresetBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const val = parseInt(btn.dataset.val, 10);
+      setBlurIntensity(val, true);
+      playSound('tap');
+    });
+  });
+
+  /* ---------------- Tab Switcher (Today / Plan) ---------------- */
+  function setTab(t) {
+    currentTab = t;
+    phone.dataset.tab = t;
+    seg.dataset.tab = t;
+    $('#tab-today').classList.toggle('on', t === 'today');
+    $('#tab-today').setAttribute('aria-selected', t === 'today');
+    $('#tab-plan').classList.toggle('on', t === 'plan');
+    $('#tab-plan').setAttribute('aria-selected', t === 'plan');
+    if (t === 'today') setScreen('triage');
+    else if (t === 'plan') setScreen('plan');
+    playSound('tap');
+  }
+  $('#tab-today').addEventListener('click', () => setTab('today'));
+  $('#tab-plan').addEventListener('click', () => setTab('plan'));
+
+  /* ---------------- Theme Toggle ---------------- */
+  let theme = 'dark';
+  function applyTheme() {
+    root.dataset.theme = theme;
+    const b = $('#theme-toggle');
+    if (b) {
+      b.querySelector('i').className = theme === 'dark' ? 'ph-light ph-sun' : 'ph-light ph-moon';
+      b.querySelector('span').textContent = theme === 'dark' ? 'Light' : 'Dark';
+    }
+  }
+  $('#theme-toggle').addEventListener('click', () => {
+    theme = theme === 'light' ? 'dark' : 'light';
+    applyTheme();
+    playSound('tap');
+  });
+  applyTheme();
+
+  /* ---------------- Wallpaper & Background Configuration Engine ---------------- */
+  const bgPresets = {
+    'black': {
+      name: 'Pure Black',
+      wall: 'none',
+      color: '#000000',
+      tint: 'none',
+      bodyBg: '#050608',
+      theme: 'dark'
+    },
+    'silk-dark': {
+      name: 'Silk Dark',
+      wall: 'url("assets/silk-dark.jpg")',
+      color: '#0b0c0f',
+      tint: 'linear-gradient(180deg, rgba(8, 9, 12, .55) 0%, rgba(8, 9, 12, .2) 40%, rgba(8, 9, 12, .65) 100%)',
+      bodyBg: '#080a0e',
+      theme: 'dark'
+    },
+    'charcoal': {
+      name: 'Charcoal',
+      wall: 'none',
+      color: '#12151b',
+      tint: 'none',
+      bodyBg: '#0c0e12',
+      theme: 'dark'
+    },
+    'silk-light': {
+      name: 'Silk Light',
+      wall: 'url("assets/silk-light.jpg")',
+      color: '#e4e7ec',
+      tint: 'linear-gradient(180deg, rgba(245, 247, 250, 0.36) 0%, rgba(245, 247, 250, 0.08) 42%, rgba(245, 247, 250, 0.38) 100%)',
+      bodyBg: '#d2d6df',
+      theme: 'light'
+    },
+    'totoro': {
+      name: 'Totoro',
+      wall: 'url("assets/totoro-sunflowers.png")',
+      color: '#e4e7ec',
+      tint: 'linear-gradient(180deg, rgba(245, 247, 250, 0.36) 0%, rgba(245, 247, 250, 0.08) 42%, rgba(245, 247, 250, 0.38) 100%)',
+      bodyBg: '#d6dadf',
+      theme: 'light'
+    }
+  };
+
+  let currentBg = 'black'; // Pure Black default
+  const bgVal = $('#bg-val');
+  const bgPresetBtns = $$('.bg-preset-btn');
+  const bgColorPicker = $('#bg-color-picker');
+  const bgResetBtn = $('#bg-reset-black');
+
+  function setBackground(keyOrColor, isCustom = false) {
+    if (!isCustom && bgPresets[keyOrColor]) {
+      currentBg = keyOrColor;
+      const conf = bgPresets[keyOrColor];
+      root.style.setProperty('--wall', conf.wall);
+      root.style.setProperty('--wall-color', conf.color);
+      root.style.setProperty('--wall-tint', conf.tint);
+      if (conf.bodyBg) {
+        document.body.style.background = conf.bodyBg;
+      }
+      if (bgVal) bgVal.textContent = conf.name;
+      if (bgColorPicker && conf.color.startsWith('#')) {
+        bgColorPicker.value = conf.color;
+      }
+      bgPresetBtns.forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.bg === keyOrColor);
+      });
+      if (conf.theme && theme !== conf.theme) {
+        theme = conf.theme;
+        applyTheme();
+      }
+    } else {
+      currentBg = 'custom';
+      root.style.setProperty('--wall', 'none');
+      root.style.setProperty('--wall-color', keyOrColor);
+      root.style.setProperty('--wall-tint', 'none');
+      if (bgVal) bgVal.textContent = keyOrColor;
+      bgPresetBtns.forEach(btn => btn.classList.remove('active'));
+    }
+    try { localStorage.setItem('app_wallpaper', currentBg); } catch (_) {}
+  }
+
+  bgPresetBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      setBackground(btn.dataset.bg);
+      playSound('tap');
+    });
+  });
+
+  if (bgColorPicker) {
+    bgColorPicker.addEventListener('input', (e) => {
+      setBackground(e.target.value, true);
+    });
+  }
+
+  if (bgResetBtn) {
+    bgResetBtn.addEventListener('click', () => {
+      setBackground('black');
+      playSound('tap');
+    });
+  }
+
+  /* ---------------- Fluid Spring & Interactive Gesture Engine for Command Orb ---------------- */
+  const HOLD_MS = 380;
+  const SWIPE_DRAG_THRESHOLD = 8;
+  const REST_W = 54, REST_H = 54, REST_R = 27;
+  const TEXT_H = 56, TEXT_R = 28;
+  const REST_B = 28;
+  const TEXT_B = 296 + 10; // KBD_H + 10 = 306
+  const TRAVEL_DISTANCE = TEXT_B - REST_B; // 278px
+
+  let isPointerActive = false;
+  let isDragging = false;
+  let isTextDismissDragging = false;
+  let activePointerId = null;
+  let startX = 0, startY = 0;
+  let lastY = 0, lastTime = 0;
+  let gestureVelocity = 0;
+  let holdTimer = null;
+  let cancelArmed = false;
+  let currentProgress = 0;
+  let springRaf = null;
+
+  function rubberBand(distance, dimension = 100, constant = 0.4) {
+    return (distance * dimension * constant) / (dimension + constant * distance);
+  }
+
+  function setOrbState(st) {
+    orbState = st;
+    phone.dataset.state = st;
+  }
+
+  function updateVisuals(p) {
+    currentProgress = p;
+    const phoneWidth = phone.clientWidth || 390;
+    const textW = phoneWidth - 32;
+
+    const clampedP = Math.max(0, Math.min(1, p));
+
+    if (phone.classList.contains('dragging')) {
+      const curW = REST_W + (textW - REST_W) * p;
+      const curH = REST_H + (TEXT_H - REST_H) * clampedP;
+      const curR = REST_R + (TEXT_R - REST_R) * clampedP;
+      const curB = REST_B + TRAVEL_DISTANCE * p;
+
+      orb.style.width = `${Math.max(REST_W, curW)}px`;
+      orb.style.height = `${Math.max(36, curH)}px`;
+      orb.style.borderRadius = `${Math.max(18, curR)}px`;
+      orb.style.transform = `translate3d(0, ${-TRAVEL_DISTANCE * p}px, 0)`;
+      orb.style.bottom = '';
+      orb.style.right = '16px';
+
+      if (seg) {
+        seg.style.opacity = `${Math.max(0, 1 - clampedP * 2.2)}`;
+        seg.style.transform = `scale(${1 - clampedP * 0.08}) translateX(${-clampedP * 14}px)`;
+        seg.style.pointerEvents = clampedP > 0.1 ? 'none' : '';
+      }
+
+      if (kbd) {
+        kbd.style.transform = `translateY(${(1 - clampedP) * 102}%)`;
+      }
+
+      if (scrim) {
+        scrim.style.opacity = `${clampedP * 0.75}`;
+        scrim.style.pointerEvents = clampedP > 0.05 ? 'auto' : 'none';
+      }
+
+      if (clampedP < 0.35) {
+        if (iconLayer) {
+          iconLayer.style.opacity = `${1 - clampedP / 0.35}`;
+          iconLayer.style.transform = `scale(${1 - clampedP * 0.3}) rotate(${-clampedP * 16}deg)`;
+        }
+        if (textLayer) {
+          textLayer.style.opacity = '0';
+          textLayer.style.pointerEvents = 'none';
+        }
+      } else {
+        if (iconLayer) {
+          iconLayer.style.opacity = '0';
+        }
+        if (textLayer) {
+          const textStep = Math.min(1, (clampedP - 0.35) / 0.55);
+          textLayer.style.opacity = `${textStep}`;
+          textLayer.style.transform = `translateX(${(1 - textStep) * 10}px)`;
+          textLayer.style.pointerEvents = clampedP > 0.85 ? 'auto' : 'none';
+        }
+      }
+    } else {
+      orb.style.width = '';
+      orb.style.height = '';
+      orb.style.borderRadius = '';
+      orb.style.bottom = '';
+      orb.style.right = '';
+
+      if (seg) {
+        seg.style.opacity = '';
+        seg.style.transform = '';
+        seg.style.pointerEvents = '';
+      }
+      if (kbd) kbd.style.transform = '';
+      if (scrim) {
+        scrim.style.opacity = '';
+        scrim.style.pointerEvents = '';
+      }
+      if (iconLayer) {
+        iconLayer.style.opacity = '';
+        iconLayer.style.transform = '';
+      }
+      if (textLayer) {
+        textLayer.style.opacity = '';
+        textLayer.style.transform = '';
+        textLayer.style.pointerEvents = '';
+      }
+    }
+  }
+
+  function clearDragStyles() {
+    phone.classList.remove('dragging');
+    orb.classList.remove('dragging');
+    orb.style.width = '';
+    orb.style.height = '';
+    orb.style.borderRadius = '';
+    orb.style.bottom = '';
+    orb.style.right = '';
+    orb.style.transform = '';
+    if (seg) {
+      seg.style.opacity = '';
+      seg.style.transform = '';
+      seg.style.pointerEvents = '';
+    }
+    if (kbd) kbd.style.transform = '';
+    if (scrim) {
+      scrim.style.opacity = '';
+      scrim.style.pointerEvents = '';
+    }
+    if (iconLayer) {
+      iconLayer.style.opacity = '';
+      iconLayer.style.transform = '';
+    }
+    if (textLayer) {
+      textLayer.style.opacity = '';
+      textLayer.style.transform = '';
+      textLayer.style.pointerEvents = '';
+    }
+  }
+
+  function openText() {
+    clearDragStyles();
+    phone.classList.add('used');
+    setOrbState('text');
+    playSound('tap');
+    triggerOrbMotionStreak();
+    setTimeout(() => {
+      input.focus({ preventScroll: true });
+    }, 240);
+  }
+
+  function closeToRest() {
+    clearDragStyles();
+    input.blur();
+    setOrbState('rest');
+    playSound('tap');
+    triggerOrbMotionStreak();
+  }
+
+  orb.addEventListener('contextmenu', (e) => e.preventDefault());
+
+  orb.addEventListener('pointerdown', (e) => {
+    if (orbState === 'parsing' || orbState === 'voice') return;
+    
+    isPointerActive = true;
+    activePointerId = e.pointerId;
+    try { orb.setPointerCapture(e.pointerId); } catch (_) {}
+
+    // Direct touch gesture initiated
+
+    startX = e.clientX;
+    startY = e.clientY;
+    lastY = startY;
+    lastTime = performance.now();
+    gestureVelocity = 0;
+    isDragging = false;
+    isTextDismissDragging = false;
+
+    if (orbState === 'rest') {
+      orb.classList.add('pressing');
+      holdTimer = setTimeout(() => {
+        holdTimer = null;
+        if (isPointerActive && !isDragging) {
+          orb.classList.remove('pressing');
+          startVoice();
+        }
+      }, HOLD_MS);
+    }
+  });
+
+  window.addEventListener('pointermove', (e) => {
+    if (!isPointerActive && orbState !== 'voice') return;
+
+    const now = performance.now();
+    const dt = Math.max(1, now - lastTime);
+    const dyInstant = e.clientY - lastY;
+    const instantV = -dyInstant / dt;
+    gestureVelocity = gestureVelocity * 0.4 + instantV * 0.6;
+    lastY = e.clientY;
+    lastTime = now;
+
+    if (orbState === 'voice') {
+      cancelArmed = startY - e.clientY > 70;
+      phone.classList.toggle('cancel-armed', cancelArmed);
+      voiceHint.textContent = cancelArmed ? 'Release to cancel' : 'Release to send, slide up to cancel';
+      return;
+    }
+
+    // Drag up from rest to open text
+    if (orbState === 'rest') {
+      const deltaY = startY - e.clientY;
+      const deltaX = startX - e.clientX;
+
+      if (!isDragging && (deltaY > SWIPE_DRAG_THRESHOLD || Math.abs(deltaX) > SWIPE_DRAG_THRESHOLD)) {
+        isDragging = true;
+        if (holdTimer) {
+          clearTimeout(holdTimer);
+          holdTimer = null;
+        }
+        orb.classList.remove('pressing');
+        phone.classList.add('dragging');
+        orb.classList.add('dragging');
+      }
+
+      if (isDragging) {
+        let p = deltaY / TRAVEL_DISTANCE;
+        if (p < 0) {
+          p = -rubberBand(-deltaY, 70, 0.4) / TRAVEL_DISTANCE;
+        } else if (p > 1) {
+          p = 1 + rubberBand(deltaY - TRAVEL_DISTANCE, 110, 0.35) / TRAVEL_DISTANCE;
+        }
+        updateVisuals(p);
+
+        if (blurIntensity > 0) {
+          const speed = Math.abs(instantV);
+          orb.classList.toggle('motion-streak', speed > 0.45);
+        }
+      }
+      return;
+    }
+
+    // Drag down from text mode to dismiss
+    if (orbState === 'text') {
+      const pullDown = e.clientY - startY;
+      if (!isTextDismissDragging && pullDown > SWIPE_DRAG_THRESHOLD) {
+        isTextDismissDragging = true;
+        phone.classList.add('dragging');
+        orb.classList.add('dragging');
+        input.blur();
+      }
+
+      if (isTextDismissDragging) {
+        let p = 1 - pullDown / TRAVEL_DISTANCE;
+        if (p < 0) {
+          p = -rubberBand(-p * TRAVEL_DISTANCE, 70, 0.4) / TRAVEL_DISTANCE;
+        } else if (p > 1) {
+          p = 1 + rubberBand((p - 1) * TRAVEL_DISTANCE, 110, 0.35) / TRAVEL_DISTANCE;
+        }
+        updateVisuals(p);
+
+        if (blurIntensity > 0) {
+          const speed = Math.abs(instantV);
+          orb.classList.toggle('motion-streak', speed > 0.45);
+        }
+      }
+    }
+  });
+
+  const handlePointerEnd = (e, cancel = false) => {
+    if (!isPointerActive && orbState !== 'voice') return;
+    isPointerActive = false;
+    orb.classList.remove('pressing');
+    phone.classList.remove('dragging');
+    orb.classList.remove('dragging');
+    orb.classList.remove('motion-streak');
+
+    if (activePointerId !== null) {
+      try { orb.releasePointerCapture(activePointerId); } catch (_) {}
+      activePointerId = null;
+    }
+
+    if (orbState === 'voice') {
+      endVoice(cancel || cancelArmed);
+      return;
+    }
+
+    if (holdTimer) {
+      clearTimeout(holdTimer);
+      holdTimer = null;
+    }
+
+    const vProgressSec = (gestureVelocity * 1000) / TRAVEL_DISTANCE;
+
+    if (orbState === 'rest') {
+      if (!isDragging && !cancel) {
+        openText();
+        return;
+      }
+
+      if (isDragging) {
+        isDragging = false;
+        const shouldComplete = !cancel && (vProgressSec > 0.8 || (vProgressSec >= -0.8 && currentProgress >= 0.38));
+        if (shouldComplete) {
+          openText();
+        } else {
+          closeToRest();
+        }
+      }
+      return;
+    }
+
+    if (orbState === 'text') {
+      if (isTextDismissDragging) {
+        isTextDismissDragging = false;
+        const shouldDismiss = !cancel && (vProgressSec < -0.8 || (vProgressSec <= 0.8 && currentProgress < 0.65));
+        if (shouldDismiss) {
+          closeToRest();
+        } else {
+          openText();
+        }
+      }
+    }
+  };
+
+  window.addEventListener('pointerup', (e) => handlePointerEnd(e, false));
+  window.addEventListener('pointercancel', (e) => handlePointerEnd(e, true));
+
+  scrim.addEventListener('click', () => { if (orbState === 'text') closeToRest(); });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && orbState === 'text') closeToRest(); });
+
+  input.addEventListener('input', () => {
+    sendBtn.disabled = !input.value.trim();
+  });
+  input.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      if (input.value.trim()) dispatchTask(input.value.trim());
+    }
+  });
+  sendBtn.addEventListener('pointerdown', (e) => e.preventDefault());
+  sendBtn.addEventListener('click', () => {
+    if (input.value.trim()) dispatchTask(input.value.trim());
+  });
+
+  // Suggestion chips
+  $$('.suggest button').forEach(chip => {
+    chip.addEventListener('click', () => {
+      input.value = chip.dataset.text;
+      sendBtn.disabled = false;
+      input.focus();
+      playSound('tap');
+    });
+  });
+
+  // Keyboard keys
+  $$('.key:not(.wide):not(.space)').forEach(k => {
+    k.addEventListener('click', () => {
+      input.value += k.textContent;
+      sendBtn.disabled = !input.value.trim();
+      playSound('tap');
+    });
+  });
+  $('#k-space').addEventListener('click', () => {
+    input.value += ' ';
+    playSound('tap');
+  });
+  $('#k-back').addEventListener('click', () => {
+    input.value = input.value.slice(0, -1);
+    sendBtn.disabled = !input.value.trim();
+    playSound('tap');
+  });
+  $('#k-done').addEventListener('click', () => {
+    if (input.value.trim()) dispatchTask(input.value.trim());
+  });
+
+  function dispatchTask(text) {
+    setOrbState('parsing');
+    parseText.textContent = text;
+    playSound('check');
+
+    setTimeout(() => {
+      spawnDroplet();
+      setTimeout(() => {
+        closeToRest();
+        input.value = '';
+        sendBtn.disabled = true;
+      }, 500);
+    }, 900);
+  }
+
+  function spawnDroplet() {
+    const d = document.createElement('div');
+    d.className = 'droplet';
+    d.style.setProperty('--c', 'var(--c-calc)');
+    d.style.left = '320px';
+    d.style.top = '770px';
+    if (blurIntensity > 0) {
+      d.style.filter = 'url(#blur-droplet)';
+    }
+    phone.appendChild(d);
+
+    const anim = d.animate([
+      { transform: 'translate3d(0, 0, 0) scale(1.4) scale3d(0.7, 1.6, 1)', opacity: 1 },
+      { transform: 'translate3d(-140px, -460px, 0) scale(0.6) scale3d(1, 1, 1)', opacity: 0 }
+    ], { duration: 650, easing: 'cubic-bezier(0.22, 1, 0.32, 1)' });
+
+    anim.onfinish = () => d.remove();
+  }
+
+  /* ---------------- Voice Waveform Simulation ---------------- */
+  const canvas = $('#wave');
+  const ctx = canvas.getContext('2d');
+  let waveRaf = null;
+  let voiceTimer = null;
+  let voiceSecs = 0;
+
+  function resizeCanvas() {
+    const r = canvas.getBoundingClientRect();
+    if (!r.width) return;
+    canvas.width = r.width * window.devicePixelRatio;
+    canvas.height = r.height * window.devicePixelRatio;
+  }
+
+  function drawWave() {
+    if (orbState !== 'voice') return;
+    resizeCanvas();
+    const w = canvas.width, h = canvas.height;
+    ctx.clearRect(0, 0, w, h);
+    ctx.lineWidth = 2 * window.devicePixelRatio;
+    ctx.strokeStyle = '#c2414b';
+    ctx.beginPath();
+
+    const t = Date.now() * 0.006;
+    for (let x = 0; x < w; x += 3) {
+      const y = h / 2 + Math.sin(x * 0.05 + t) * Math.cos(x * 0.02 + t * 0.7) * (h * 0.38);
+      if (x === 0) ctx.moveTo(x, y);
+      else ctx.lineTo(x, y);
+    }
+    ctx.stroke();
+    waveRaf = requestAnimationFrame(drawWave);
+  }
+
+  function startVoice() {
+    setOrbState('voice');
+    playSound('tap');
+    voiceSecs = 0;
+    $('#rec-time').textContent = '0:00';
+    voiceTimer = setInterval(() => {
+      voiceSecs++;
+      const m = Math.floor(voiceSecs / 60);
+      const s = String(voiceSecs % 60).padStart(2, '0');
+      $('#rec-time').textContent = `${m}:${s}`;
+    }, 1000);
+    drawWave();
+  }
+
+  function endVoice(canceled = false) {
+    clearInterval(voiceTimer);
+    if (waveRaf) cancelAnimationFrame(waveRaf);
+    phone.classList.remove('cancel-armed');
+
+    if (canceled) {
+      closeToRest();
+    } else {
+      dispatchTask('Recorded voice task');
+    }
+  }
+
+  /* ---------------- Live Focus & Room Countdown Timers ---------------- */
+  let focusSecs = 19 * 60;
+  let roomSecs = 24 * 60 + 12;
+
+  setInterval(() => {
+    if (focusSecs > 0) {
+      focusSecs--;
+      const m = Math.floor(focusSecs / 60);
+      $('#focus-countdown').textContent = `${m} min`;
+    }
+
+    if (roomSecs > 0) {
+      roomSecs--;
+      const rm = Math.floor(roomSecs / 60);
+      const rs = String(roomSecs % 60).padStart(2, '0');
+      $('#room-countdown').textContent = `${rm}:${rs}`;
+    }
+  }, 1000);
+
+  // Initialize prebaked motion blur, pure black background, and layout
+  setBlurIntensity(50);
+  setBackground('black');
+  updateVisuals(0);
+  setScreen('triage');
+})();
+</script>
+</body>
+</html>

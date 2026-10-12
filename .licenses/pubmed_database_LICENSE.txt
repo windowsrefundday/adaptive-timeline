@@ -1,0 +1,2 @@
+User Notification: Check terms at https://pubmed.ncbi.nlm.nih.gov/disclaimer/ and https://www.ncbi.nlm.nih.gov/home/about/policies/ and always check the license of papers retrieved by the skill for any restrictions.
+Timestamp: 2026-10-03T23:32:00-04:00
